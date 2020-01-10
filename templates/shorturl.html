@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+
+  <style>
+    .main {
+      text-align: center; /*让div内部文字居中*/
+      background-color: #fff;
+      border-radius: 20px;
+      width: 600px;
+      height: 350px;
+      margin: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  </style>
+{% endblock %}
+{% block body %}
+  <body>
+  <section class="main">
+    <div class="input-group margin">
+      <input type="text" class="form-control" id="paste_path_value">
+      <span class="input-group-btn">
+      <button type="button" class="btn btn-info btn-flat" id="submit-shorturl">短链接</button>
+    </span>
+    </div>
+    <div class="input-group margin" style="display: none" id="shortcode-div">
+      <input type="text" class="form-control" id="shortcode">
+      <span class="input-group-btn">
+      <button type="button" class="btn btn-info btn-flat" id="submit-copy">复制</button>
+      <button type="button" class="btn btn-info btn-flat" id="submit-redirect">跳转</button>
+    </span>
+    </div>
+  </section>
+  </body>
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'js/clipborad.min.js' %}"></script>
+  <script>
+      function createShortUrl() {
+          var paste_path = $('#paste_path_value').val();
+          $.ajax({
+              url: '/api/shorturl/',
+              type: 'post',
+              data: {'paste_path': paste_path},
+              success: function (data) {
+                  $('#shortcode-div').show();
+                  var prefix = 'http://0.0.0.0:8088/api/shorturl/';
+                  $('#shortcode').val(prefix + data.short_link + '/')
+              },
+              error: function (data) {
+                  xtip.msg(data.statusText);
+              }
+          })
+      }
+
+
+
+      function copythat() {
+          var content = $("#shortcode").val();
+          var clipboard = new Clipboard('#submit-copy', {
+              text: function () {
+                  return content;
+              }
+          });
+          clipboard.on('success', function (e) {
+              xtip.msg('复制成功')
+          });
+
+          clipboard.on('error', function (e) {
+              console.log(e);
+          });
+      }
+
+      $(document).ready(function () {
+          $('#submit-shorturl').click(function () {
+              createShortUrl();
+          });
+          $('#submit-copy').click(function () {
+              copythat();
+          });
+          $('#submit-redirect').click(function () {
+              window.open($('#shortcode').val())
+          })
+
+      })
+  </script>
+{% endblock %}
