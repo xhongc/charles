@@ -2,4 +2,7 @@ from django.apps import AppConfig
 
 
 class ChatConfig(AppConfig):
-    name = 'chat'
+    name = 'charles.chat'
+
+    def ready(self):
+        import charles.chat.receivers

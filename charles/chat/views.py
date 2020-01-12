@@ -10,7 +10,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from charles.chat.models import ChatRoom
+from charles.chat.models import ChatRoom, UserProfile
+from charles.chat.serializers import FriendsSerializers, ListFriendsSerializers
 
 
 @login_required(login_url='/login/')
@@ -24,3 +25,18 @@ class ChatIndexViewsets(mixins.ListModelMixin, GenericViewSet):
 
     def list(self, request, *args, **kwargs):
         return render(request, template_name='chat/boot_chat.html')
+
+
+class FriendsViewsets(mixins.CreateModelMixin, mixins.ListModelMixin, GenericViewSet):
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    serializer_class = FriendsSerializers
+
+    def get_queryset(self):
+        return self.request.user.profile.friends.all()
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            serializer_class = FriendsSerializers
+        elif self.action == 'list':
+            serializer_class = ListFriendsSerializers
+        return serializer_class

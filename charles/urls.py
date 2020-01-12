@@ -22,14 +22,16 @@ from django.views.generic import TemplateView
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
+from charles.chat.views import FriendsViewsets
 from charles.shorturl.views import ShortUrlViewsets
-from project.views import ProjectViewset, HeroesViewset, echo
+from project.views import ProjectViewset, HeroesViewset
 from utils.channelsmiddleware import LoginObtainJSONWebToken
 
 router = DefaultRouter()
 router.register(r'project', viewset=ProjectViewset, base_name='project')
 router.register(r'heroes', viewset=HeroesViewset, base_name='heroes')
 router.register(r'shorturl', viewset=ShortUrlViewsets, base_name='shorturl')
+router.register(r'friends', viewset=FriendsViewsets, base_name='friends')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -42,7 +44,6 @@ urlpatterns = [
     path('shorturl/', TemplateView.as_view(template_name='shorturl.html'), name='shorturl'),
     path('generateid/', TemplateView.as_view(template_name='generateid.html'), name='generateid'),
     path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
-    url(r'^echo/$', echo, name='echo'),
 ]
 
 if settings.DEBUG:

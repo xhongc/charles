@@ -22,7 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!z+dsq6i#v8z0*$i7=o8^k=+-xa)6+*(hs!4csz3a&sxm_igfl'
 WSGI_APPLICATION = 'charles.wsgi.application'
 
-import dwebsocket
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -72,7 +71,6 @@ INSTALLED_APPS = [
     'djcelery',
     'corsheaders',
     'channels',
-    'sslserver',
     'charles.shorturl',
     'charles.chat',
 ]
@@ -149,7 +147,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'charles_db',
         'USER': 'root',
-        'PASSWORD': 'xhongcc',
+        'PASSWORD': 'xhongc',
         'HOST': '',
         'PORT': '',
     },
