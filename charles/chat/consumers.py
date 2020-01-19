@@ -28,6 +28,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        msg_type = text_data_json['msg_type']
         if isinstance(self.scope.get('user'), AnonymousUser):
             chat_user = 'Guest'
         else:
@@ -40,7 +41,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message': message,
                 'user_id': chat_user,
-                'send_time': send_time
+                'send_time': send_time,
+                'msg_type': msg_type,
+                'username':self.scope.get('user').username
             }
         )
 
@@ -50,10 +53,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user_id = event['user_id']
         send_time = event['send_time']
         type = event['type']
+        msg_type = event['msg_type']
+        username = event['username']
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
             'user_id': user_id,
             'send_time': send_time,
             'type': type,
+            'msg_type': msg_type,
+            'username': username,
         }))

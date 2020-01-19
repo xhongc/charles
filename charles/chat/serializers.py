@@ -7,6 +7,16 @@ from charles.chat.models import UserProfile
 class FriendsSerializers(serializers.Serializer):
     uid = serializers.CharField(required=True)
 
+    def validate_uid(self, u_id):
+        request = self._context.get('request')
+        friends = UserProfile.objects.filter(unicode_id=u_id).first()
+        if friends and u_id != request.user.profile.unicode_id:
+            request.user.profile.friends.add(friends)
+            request.user.profile.save()
+        else:
+            raise serializers.ValidationError('添加好友不存在')
+        return u_id
+
     def save(self, **kwargs):
         u_id = self.validated_data.get('uid')
         request = self._context.get('request')
@@ -15,7 +25,7 @@ class FriendsSerializers(serializers.Serializer):
             request.user.profile.friends.add(friends)
             request.user.profile.save()
         else:
-            pass
+            raise Exception('error')
 
 
 class ListFriendsSerializers(serializers.ModelSerializer):

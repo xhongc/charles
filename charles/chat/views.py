@@ -17,6 +17,7 @@ from charles.chat.serializers import FriendsSerializers, ListFriendsSerializers
 @login_required(login_url='/login/')
 def index(request):
     char_rooms = ChatRoom.objects.all()
+    friends = request.user.profile.friends.all()
     return render(request, 'chat/boot_chat.html', locals())
 
 
