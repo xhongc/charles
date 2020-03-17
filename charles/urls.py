@@ -22,7 +22,7 @@ from django.views.generic import TemplateView
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
-from charles.chat.views import FriendsViewsets
+from charles.chat.views import FriendsViewsets, ChatLogViewsets
 from charles.shorturl.views import ShortUrlViewsets
 from project.views import ProjectViewset, HeroesViewset
 from utils.channelsmiddleware import LoginObtainJSONWebToken
@@ -32,6 +32,7 @@ router.register(r'project', viewset=ProjectViewset, base_name='project')
 router.register(r'heroes', viewset=HeroesViewset, base_name='heroes')
 router.register(r'shorturl', viewset=ShortUrlViewsets, base_name='shorturl')
 router.register(r'friends', viewset=FriendsViewsets, base_name='friends')
+router.register(r'chat_log', viewset=ChatLogViewsets, base_name='chat_log')
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

@@ -18,7 +18,7 @@ class ChatRoom(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='profile')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     nick_name = models.CharField(max_length=64)
     signature = models.CharField(max_length=255, null=True, blank=True)
     friends = models.ManyToManyField('self', related_name='my_friends', blank=True)
@@ -26,3 +26,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.nick_name
+
+
+class ChatLog(models.Model):
+    chat_datetime = models.DateTimeField(null=True, blank=True, db_index=True)
+    content = models.TextField(null=True, blank=True)
+    who_said = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=False, related_name='who_said')
+    said_to = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=False, null=True, blank=True,
+                                related_name='said_to')
+    said_to_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, db_constraint=False, null=True, blank=True)

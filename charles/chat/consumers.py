@@ -3,6 +3,8 @@ from datetime import datetime
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.contrib.auth.models import AnonymousUser
 
+from charles.chat.models import ChatLog, ChatRoom
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -32,18 +34,27 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if isinstance(self.scope.get('user'), AnonymousUser):
             chat_user = 'Guest'
         else:
-            chat_user = str(self.scope.get('user').id)
-        send_time = datetime.now().strftime('%p %H:%M')
+            chat_user = self.scope.get('user')
+        send_time = datetime.now()
+        if msg_type == 'chat_message':
+            if self.room_name.isdigit():
+                pass
+            else:
+                char_room = ChatRoom.objects.filter(channel_no=self.room_name).first()
+                ChatLog.objects.create(chat_datetime=send_time,
+                                       content=text_data,
+                                       who_said=chat_user,
+                                       said_to_room=char_room)
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
                 'message': message,
-                'user_id': chat_user,
-                'send_time': send_time,
+                'user_id': str(chat_user.id),
+                'send_time': send_time.strftime('%p %H:%M'),
                 'msg_type': msg_type,
-                'username':self.scope.get('user').username
+                'username': self.scope.get('user').username
             }
         )
 

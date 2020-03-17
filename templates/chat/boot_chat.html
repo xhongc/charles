@@ -652,7 +652,7 @@
           <div class="sidebar-body" style="overflow: hidden; outline: none;" tabindex="4">
             <ul class="list-group list-group-flush">
               {% for friend in friends %}
-                <li class="list-group-item">
+                <li class="list-group-item" channel_no="{{ friend.unicode_id }}">
                   <div>
                     <figure class="avatar">
                       <img src="#" class="rounded-circle">
@@ -1103,7 +1103,6 @@
   <script>
       function postFriend() {
           let uid = $('#id_friend_uid').val();
-          console.log('asda', uid);
           $.ajax({
               url: '/api/friends/',
               type: 'post',
@@ -1130,6 +1129,8 @@
       });
 
       function join(channle_no) {
+          ChatosExamle.Message.delete();
+
           chatSocket = new ReconnectingWebSocket(
               'ws://' + window.location.host +
               '/ws/chat/' + channle_no + '/?token=Jwt ' + window.sessionStorage.token);
@@ -1212,6 +1213,9 @@
                           cursorborder: '0px'
                       });
                   }
+              },
+              delete: function () {
+                  $('.layout .content .chat .chat-body .messages').empty()
               }
           },
           Info: {
@@ -1231,27 +1235,14 @@
           }
       };
 
+
       function addFriends() {
           xtip.open({
               type: 'noready',
-              content: '#addFriends',
-              title: '【ready类型】',
-              width: '700px',
-              height: '400px',
-              lock: true,
-              move: false,
-              max: true,
-              bgcolor: 'w',
-          });
-      }
-
-      function xtip_open2() {
-          xtip.open({
-              type: 'noready',
               content: '#tip_content2',
-              title: '【noready类型】',
+              title: '添加好友',
               width: '320px',
-              height: '360px',
+              height: '220px',
               min: true,
               shade: false,
           });
@@ -1262,7 +1253,7 @@
           e.preventDefault();
           var messageInputDom = $('#chat-message-input');
           var message = messageInputDom.val();
-          if (chatSocket!=null && chatSocket.readyState === 1) {
+          if (chatSocket != null && chatSocket.readyState === 1) {
               chatSocket.send(JSON.stringify({
                   'message': message,
                   'msg_type': 'chat_message',
@@ -1275,8 +1266,7 @@
       });
 
       $('#addFriends_btn').click(function () {
-          {#addFriends()#}
-          xtip_open2()
+          addFriends()
       });
       $(document).ready(function () {
 

@@ -24,8 +24,20 @@ class ShortUrlViewsets(mixins.CreateModelMixin, mixins.RetrieveModelMixin, Gener
     queryset = ShortUrl.objects.all()
     serializer_class = ShortUrlCreateSerilizer
     throttle_classes = [UserRateThrottle]
-    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
-    permission_classes = (IsAuthenticated,)
+
+    def get_authentication_classes(self):
+        if self.action == 'create':
+            authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+        else:
+            authentication_classes = ''
+        return authentication_classes
+
+    def get_permission_classes(self):
+        if self.action == 'create':
+            permission_classes = (IsAuthenticated,)
+        else:
+            permission_classes = ''
+        return permission_classes
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
