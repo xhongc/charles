@@ -41,10 +41,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 pass
             else:
                 char_room = ChatRoom.objects.filter(channel_no=self.room_name).first()
-                ChatLog.objects.create(chat_datetime=send_time,
-                                       content=text_data,
-                                       who_said=chat_user,
-                                       said_to_room=char_room)
+                if message:
+                    ChatLog.objects.create(chat_datetime=send_time,
+                                           content=message,
+                                           msg_type=msg_type,
+                                           who_said=chat_user,
+                                           said_to_room=char_room)
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,

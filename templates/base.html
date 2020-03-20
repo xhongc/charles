@@ -58,7 +58,7 @@
         cache: false,
         headers: {
             "X-CSRFToken": "{{ csrf_token }}",
-            'Authorization': 'Jwt ' + window.sessionStorage.token
+            'Authorization': 'Jwt ' + window.localStorage.token
         },
         xhrFields: {
             withCredentials: true

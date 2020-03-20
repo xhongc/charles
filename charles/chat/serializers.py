@@ -1,7 +1,7 @@
 from rest_framework import serializers, status
 from rest_framework.response import Response
 
-from charles.chat.models import UserProfile, ChatLog
+from charles.chat.models import UserProfile, ChatLog, ChatRoom
 
 
 class FriendsSerializers(serializers.Serializer):
@@ -37,4 +37,17 @@ class ListFriendsSerializers(serializers.ModelSerializer):
 class PostChatLogSerializers(serializers.ModelSerializer):
     class Meta:
         model = ChatLog
+        fields = '__all__'
+
+
+class ListChatLogSerializers(serializers.ModelSerializer):
+    chat_datetime = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+    class Meta:
+        model = ChatLog
+        fields = '__all__'
+
+
+class ChatRoomSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = ChatRoom
         fields = '__all__'

@@ -21,6 +21,10 @@
       right: 0;
       bottom: 0;
     }
+
+    .chat-bg {
+      background-color: #86bfa50d;
+    }
   </style>
 {% endblock %}
 {% block body %}
@@ -556,7 +560,7 @@
 
         <div id="chats" class="sidebar active">
           <header>
-            <span>Chats</span>
+            <span>Hi {{ user.username }}~</span>
             <ul class="list-inline">
               <li class="list-inline-item" data-toggle="tooltip" title="" data-original-title="New Group">
                 <a class="btn btn-light" href="#" data-toggle="modal"
@@ -585,13 +589,13 @@
             <ul class="list-group list-group-flush">
               {% for room in char_rooms %}
                 {% if forloop.first %}
-                  <li class="list-group-item open-chat" channel_no="{{ room.channel_no }}">
+                  <li class="list-group-item" channel_no="{{ room.channel_no }}">
                     {% else %}
                   <li class="list-group-item" channel_no="{{ room.channel_no }}">
                 {% endif %}
               <div>
                 <figure class="avatar">
-                  <img src="{% static 'images/chat/yeswecode.jpg' %}" class="rounded-circle">
+                  <img src="{{ room.img_path }}" class="rounded-circle">
                 </figure>
               </div>
               <div class="users-list-body">
@@ -778,48 +782,58 @@
 
       </div>
 
-
-      <div class="chat">
+      {#聊天框#}
+      <div class="chat chat-bg chatbox" style="display: none">
         <div class="chat-header">
-          <div class="chat-header-user">
+          <div class="chat-header-user" data-navigation-target="contact-information" style="cursor: pointer">
             <figure class="avatar avatar-lg">
-              <img src="{% static 'images/chat/yeswecode.jpg' %}" class="rounded-circle">
+              <img src="#" class="rounded-circle id_room_img">
             </figure>
             <div>
-              <h5>Charles</h5>
+              <h5 class="id_room_name">@</h5>
               <small class="text-muted">
-                <i>Online</i>
+                <i class="id_room_description">*</i>
               </small>
             </div>
           </div>
 
-
           <div class="chat-header-action">
             <ul class="list-inline">
+{#              电话按钮#}
               <li class="list-inline-item">
                 <a href="#" class="btn btn-success">
                   <i class="fa fa-phone" aria-hidden="true"></i>
                 </a>
               </li>
+
+{#              视频按钮#}
               <li class="list-inline-item">
                 <a href="#" class="btn btn-secondary">
                   <i class="fa fa-video-camera" aria-hidden="true"></i>
                 </a>
               </li>
+              {#新更多#}
               <li class="list-inline-item">
-                <a href="#" class="btn btn-secondary"
-                   data-toggle="dropdown">
+                <a href="#"
+                     data-navigation-target="room—member-info" class="btn btn-secondary">
                   <i class="ti-more"></i>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a href="#"
-                     data-navigation-target="contact-information" class="dropdown-item">Profile</a>
-                  <a href="#" class="dropdown-item">Add to archive</a>
-                  <a href="#" class="dropdown-item">Delete</a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">Block</a>
-                </div>
               </li>
+{#              更多#}
+{#              <li class="list-inline-item">#}
+{#                <a href="#" class="btn btn-secondary"#}
+{#                   data-toggle="dropdown">#}
+{#                  <i class="ti-more"></i>#}
+{#                </a>#}
+{#                <div class="dropdown-menu dropdown-menu-left">#}
+{#                  <a href="#"#}
+{#                     data-navigation-target="contact-information" class="dropdown-item">Profile</a>#}
+{#                  <a href="#" class="dropdown-item">Add to archive</a>#}
+{#                  <a href="#" class="dropdown-item">Delete</a>#}
+{#                  <div class="dropdown-divider"></div>#}
+{#                  <a href="#" class="dropdown-item">Block</a>#}
+{#                </div>#}
+{#              </li>#}
             </ul>
           </div>
         </div>
@@ -847,7 +861,8 @@
           </form>
         </div>
       </div>
-
+      {#聊天框end#}
+      {#资料抽屉#}
       <div class="sidebar-group">
         <div id="contact-information" class="sidebar">
           <header>
@@ -863,22 +878,20 @@
           <div class="sidebar-body" style="overflow: hidden; outline: none;" tabindex="6">
             <div class="pl-4 pr-4 text-center">
               <figure class="avatar avatar-state-danger avatar-xl mb-4">
-                <img src="{% static 'images/chat/yeswecode.jpg' %}" class="rounded-circle">
+                <img src="#" class="rounded-circle id_room_img">
               </figure>
-              <h5 class="text-primary">Frans Hanscombe</h5>
-              <p class="text-muted">Last seen: Today</p>
+              <h5 class="text-primary id_room_name">Frans Hanscombe</h5>
+              <p class="text-muted id_room_description">Last seen: Today</p>
             </div>
             <hr>
             <div class="pl-4 pr-4">
               <h6>About</h6>
-              <p class="text-muted">I love reading, traveling and discovering new things. You need to be
-                happy in
-                life.</p>
+              <p class="text-muted id_room_description"></p>
             </div>
             <hr>
             <div class="pl-4 pr-4">
-              <h6>Phone</h6>
-              <p class="text-muted">(555) 555 55 55</p>
+              <h6>Uid</h6>
+              <p class="text-muted id_channel_no">(555) 555 55 55</p>
             </div>
             <hr>
             <div class="pl-4 pr-4">
@@ -888,48 +901,27 @@
                   <li class="list-inline-item">
                     <a href="{% static 'images/chat/yeswecode.jpg' %}">
                       <figure class="avatar avatar-lg">
-<span class="avatar-title bg-warning">
-<i class="fa fa-file-pdf-o"></i>
-</span>
+                        <span class="avatar-title bg-warning">
+                        <i class="fa fa-file-pdf-o"></i>
+                        </span>
                       </figure>
                     </a>
                   </li>
                   <li class="list-inline-item">
                     <a href="#">
                       <figure class="avatar avatar-lg">
-                        <img src="#">
+                        <span class="avatar-title bg-success">
+                        <i class="fa fa-file-excel-o"></i>
+                        </span>
                       </figure>
                     </a>
                   </li>
                   <li class="list-inline-item">
                     <a href="#">
                       <figure class="avatar avatar-lg">
-                        <img src="#">
-                      </figure>
-                    </a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a href="#">
-                      <figure class="avatar avatar-lg">
-                        <img src="#">
-                      </figure>
-                    </a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a href="#">
-                      <figure class="avatar avatar-lg">
-<span class="avatar-title bg-success">
-<i class="fa fa-file-excel-o"></i>
-</span>
-                      </figure>
-                    </a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a href="#">
-                      <figure class="avatar avatar-lg">
-<span class="avatar-title bg-info">
-<i class="fa fa-file-text-o"></i>
-</span>
+                        <span class="avatar-title bg-info">
+                        <i class="fa fa-file-text-o"></i>
+                        </span>
                       </figure>
                     </a>
                   </li>
@@ -939,13 +931,13 @@
             <hr>
             <div class="pl-4 pr-4">
               <h6>City</h6>
-              <p class="text-muted">Germany / Berlin</p>
+              <p class="text-muted">Fuzhou / China</p>
             </div>
             <hr>
             <div class="pl-4 pr-4">
               <h6>Website</h6>
               <p>
-                <a href="#">www.franshanscombe.com</a>
+                <a href="#">www.xhongc.com</a>
               </p>
             </div>
             <hr>
@@ -1026,6 +1018,52 @@
           </div>
         </div>
       </div>
+      {#资料抽屉#}
+
+      {#群成员抽屉#}
+      <div class="sidebar-group">
+        <div id="room—member-info" class="sidebar">
+          <header>
+            <span>Members</span>
+            <ul class="list-inline">
+              <li class="list-inline-item">
+                <a href="#" class="btn btn-light sidebar-close">
+                  <i class="ti-close"></i>
+                </a>
+              </li>
+            </ul>
+          </header>
+          <div class="#" style="overflow: hidden; outline: none;" tabindex="6">
+            <div class="pl-4 pr-4 text-center">
+              <figure class="avatar avatar-state-danger avatar-xl mb-4">
+                <img src="{% static 'images/chat/yeswecode.jpg' %}" class="rounded-circle">
+              </figure>
+              <h5 class="text-primary">Admin</h5>
+              <p class="text-muted">I am admin</p>
+            </div>
+            <hr>
+            <div class="pl-4 pr-4">
+              <h6>群成员 (2/100)</h6>
+            </div>
+            <hr>
+{#          todo#}
+            {% for friend in friends %}
+                <li class="list-group-item">
+                  <div>
+                    <figure class="avatar">
+                      <img src="{{ friend.img_path }}" class="rounded-circle">
+                    </figure>
+                  </div>
+                  <div class="users-list-body">
+                    <h5>{{ friend.nick_name }}</h5>
+                    <p>{{ friend.signature }}</p>
+                  </div>
+                </li>
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+      {#群成员抽屉#}
     </div>
 
   </div>
@@ -1124,16 +1162,27 @@
           $(this).siblings('li').removeClass('disabled');
           $(this).addClass('open-chat');
           $(this).addClass('disabled');
-          var channle_no = $(this).attr('channel_no');
-          chatSocket = joinRoom(channle_no);
+          var channel_no = $(this).attr('channel_no');
+          chatSocket = joinRoom(channel_no);
       });
 
-      function join(channle_no) {
+      function join(channel_no) {
           ChatosExamle.Message.delete();
+          try {
+              if (!window.localStorage.token) {
+                  window.location.href = '/login/'
+              } else {
+                  chatSocket = new ReconnectingWebSocket(
+                      'ws://' + window.location.host +
+                      '/ws/chat/' + channel_no + '/?token=Jwt ' + window.localStorage.token);
+              }
 
-          chatSocket = new ReconnectingWebSocket(
-              'ws://' + window.location.host +
-              '/ws/chat/' + channle_no + '/?token=Jwt ' + window.sessionStorage.token);
+          } catch (e) {
+              console.log('aaaa', e.message)
+          }
+          getChatRoomInfo(channel_no);
+          getChatLog(channel_no);
+          $('.chatbox').show();
           if (chatSocket != null) {
               chatSocket.onopen = function (e) {
                   let username = "{{ request.user.username }}";
@@ -1148,11 +1197,11 @@
                   var msg_type = data['msg_type'];
                   var user_id = data['user_id'];
                   var send_time = data['send_time'];
-                  var me = window.sessionStorage.user_id;
+                  var me = window.localStorage.user_id;
                   if (message) {
                       if (msg_type === 'chat_message') {
                           if (user_id === me) {
-                              ChatosExamle.Message.add(message, '', send_time);
+                              ChatosExamle.Message.add(message, 'inside-message', send_time);
                           } else {
                               ChatosExamle.Message.add(message, 'outgoing-message', send_time);
                               xtip.danmu(message, {light: true, type: 'w', icon: 'h'})
@@ -1162,7 +1211,7 @@
                           ChatosExamle.Info.add(message, '', '');
                       }
                   } else {
-                      console.log('oooo')
+                      xtip.msg('不能输入空')
                   }
               };
               chatSocket.onclose = function (e) {
@@ -1177,10 +1226,10 @@
           return chatSocket
       }
 
-      function joinRoom(channle_no) {
-          console.log('join ' + channle_no);
+      function joinRoom(channel_no) {
+          console.log('join ' + channel_no);
           if (chatSocket == null) {
-              return join(channle_no)
+              return join(channel_no)
           } else {
               switch (chatSocket.readyState) {
                   case 0: //CONNECTING
@@ -1188,7 +1237,7 @@
                       return chatSocket;
                   case 1: //OPEN
                       chatSocket.close();
-                      return join(channle_no);
+                      return join(channel_no);
                   case 2:
                       xtip.msg('正在关闭！');
                       return chatSocket;
@@ -1235,6 +1284,25 @@
           }
       };
 
+      function getChatLog(channel_no) {
+          $.get('/api/chat_log/', {'channel_no': channel_no}).success(function (data) {
+              data = data.results;
+              console.log(data);
+              var me = window.localStorage.user_id;
+              if (data.length !== 0) {
+                  console.log('data');
+                  $.each(data, function (i, item) {
+                      console.log(item.who_said, parseInt(me));
+                      if (item.who_said === parseInt(me)) {
+                          ChatosExamle.Message.add(item.content, 'inside-message', item.chat_datetime);
+                      } else {
+                          ChatosExamle.Message.add(item.content, 'outgoing-message', item.chat_datetime);
+                      }
+                  });
+                  ChatosExamle.Info.add('---历史记录---', '', '');
+              }
+          })
+      }
 
       function addFriends() {
           xtip.open({
@@ -1248,6 +1316,14 @@
           });
       }
 
+      function getChatRoomInfo(channel_no) {
+          $.get('/api/chat_room/', {'channel_no': channel_no}).success(function (data) {
+              $('.id_room_name').html(data[0].room_name);
+              $('.id_room_description').html(data[0].room_description);
+              $('.id_room_img').attr('src',data[0].img_path);
+              $('.id_channel_no').html(channel_no);
+          })
+      }
 
       $('#chat-message-submit').click(function (e) {
           e.preventDefault();
