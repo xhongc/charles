@@ -1,5 +1,6 @@
-from rest_framework import serializers, status
-from rest_framework.response import Response
+import random
+
+from rest_framework import serializers
 
 from charles.chat.models import UserProfile, ChatLog, ChatRoom
 
@@ -42,12 +43,48 @@ class PostChatLogSerializers(serializers.ModelSerializer):
 
 class ListChatLogSerializers(serializers.ModelSerializer):
     chat_datetime = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+
     class Meta:
         model = ChatLog
         fields = '__all__'
 
 
 class ChatRoomSerializers(serializers.ModelSerializer):
+    admins = serializers.CharField(read_only=True)
+    channel_no = serializers.CharField(required=False)
+
     class Meta:
         model = ChatRoom
         fields = '__all__'
+
+    def save(self, **kwargs):
+        request = self._context.get('request')
+        members = self.validated_data.pop('members')
+        self.validated_data['channel_no'] = random.randint(2, 9999)
+        ct_room = ChatRoom(**self.validated_data)
+        self.validated_data['members'] = members
+        ct_room.save()
+        ct_room.admins.add(request.user.profile)
+        ct_room.save()
+
+
+class ListChatRoomSerializers(serializers.ModelSerializer):
+    admins = ListFriendsSerializers(many=True)
+    members = ListFriendsSerializers(many=True)
+
+    class Meta:
+        model = ChatRoom
+        fields = '__all__'
+#todo 加好友 不在群里的 报错ws 不要执行任何
+
+class UpdateChatRoomSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = ChatRoom
+        fields = ('members',)
+
+    def validate_members(self, attrs):
+        return self.initial_data.getlist('members[]')
+
+    def save(self, **kwargs):
+        print(self.validated_data)
+        print(self.initial_data.getlist('members[]'))

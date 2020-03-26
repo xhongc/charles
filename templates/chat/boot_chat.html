@@ -25,6 +25,10 @@
     .chat-bg {
       background-color: #86bfa50d;
     }
+
+    .modal-backdrop {
+      opacity: 0.5 !important;
+    }
   </style>
 {% endblock %}
 {% block body %}
@@ -39,38 +43,6 @@
         <div class="modal-body">
           <div class="connection-error">
             <h4 class="text-center">Application disconnected...</h4>
-            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                 x="0px" y="0px" width="862.899px" height="862.9px" viewBox="0 0 862.899 862.9"
-                 style="enable-background:new 0 0 862.899 862.9;" xml:space="preserve">
-<g>
-<g>
-<circle cx="385.6" cy="656.1" r="79.8"></circle>
-  <path d="M561.7,401c-15.801-10.3-32.601-19.2-50.2-26.6c-39.9-16.9-82.3-25.5-126-25.5c-44.601,0-87.9,8.9-128.6,26.6
-                                    c-39.3,17-74.3,41.3-104.1,72.2L253.5,545c34.899-36.1,81.8-56,132-56c49,0,95.1,19.1,129.8,53.8l25.4-25.399L493,469.7L561.7,401
-                                    z"></path>
-  <path d="M385.6,267.1c107.601,0,208.9,41.7,285.3,117.4l98.5-99.5c-50-49.5-108.1-88.4-172.699-115.6
-                                    c-66.9-28.1-138-42.4-211.101-42.4c-73.6,0-145,14.4-212.3,42.9c-65,27.5-123.3,66.8-173.3,116.9l99,99
-                                    C175.5,309.299,277.3,267.1,385.6,267.1z"></path>
-  <polygon points="616.8,402.5 549.7,469.599 639.2,559.099 549.7,648.599 616.8,715.7 706.3,626.2 795.8,715.7 862.899,648.599
-                                    773.399,559.099 862.899,469.599 795.8,402.5 706.3,492 		"></polygon>
-</g>
-</g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-              <g></g>
-</svg>
           </div>
         </div>
         <div class="modal-footer justify-content-center">
@@ -108,9 +80,9 @@
   {#    </div>#}
   {#  </div>#}
 
-
-  <div class="modal fade" id="newGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-       aria-hidden="true">
+  {#  添加创建群组#}
+  <div class="modal" id="newGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+       aria-hidden="true" style="background-color: transparent">
     <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -122,7 +94,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <form>
+          <form id="id_create_group_form">
             <div class="form-group">
               <label for="group_name" class="col-form-label">Group name</label>
               <input type="text" class="form-control" id="group_name">
@@ -132,42 +104,40 @@
               <input type="text" class="form-control" id="users" placeholder="Find user">
             </div>
             <div class="form-group">
-              <div class="avatar-group">
-                <figure class="avatar">
-                  <span class="avatar-title bg-success rounded-circle">E</span>
-                </figure>
-                <figure class="avatar">
-                  <img src="#" class="rounded-circle">
-                </figure>
-                <figure class="avatar">
-                  <span class="avatar-title bg-danger rounded-circle">S</span>
-                </figure>
-                <figure class="avatar">
-                  <img src="#" class="rounded-circle">
-                </figure>
-                <figure class="avatar">
-                  <span class="avatar-title bg-info rounded-circle">C</span>
-                </figure>
-                <a href="#">
-                  <figure class="avatar">
-                    <span class="avatar-title bg-primary rounded-circle">+</span>
-                  </figure>
-                </a>
-              </div>
-            </div>
-            <div class="form-group">
               <label for="description" class="col-form-label">Description</label>
               <textarea class="form-control" id="description"></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Create Group</button>
+          <button type="button" class="btn btn-primary" id="id_create_group">Create Group</button>
         </div>
       </div>
     </div>
   </div>
-
+  {#邀请好友#}
+  <div class="modal" id="inviteFriends" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+       aria-hidden="true" style="background-color: transparent">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-zoom" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fa fa-users"></i> Invite Friends
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <i class="ti-close"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <select multiple class="form-control" id="id_my_friends_list">
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="id_invite_friends">Invite</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="modal fade" id="settingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
        aria-hidden="true">
@@ -484,7 +454,7 @@
       <div class="nav-group">
         <ul>
           <li>
-            <a class="logo" href="#">
+            <a class="logo" href="/">
               <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                    xmlns:xlink="http://www.w3.org/1999/xlink"
                    x="0px" y="0px" width="33.004px" height="33.003px" viewBox="0 0 33.004 33.003"
@@ -589,9 +559,9 @@
             <ul class="list-group list-group-flush">
               {% for room in char_rooms %}
                 {% if forloop.first %}
-                  <li class="list-group-item" channel_no="{{ room.channel_no }}">
+                  <li class="list-group-item" channel_no="{{ room.channel_no }}" id="{{ room.channel_no }}">
                     {% else %}
-                  <li class="list-group-item" channel_no="{{ room.channel_no }}">
+                  <li class="list-group-item" channel_no="{{ room.channel_no }}" id="{{ room.channel_no }}">
                 {% endif %}
               <div>
                 <figure class="avatar">
@@ -799,14 +769,14 @@
 
           <div class="chat-header-action">
             <ul class="list-inline">
-{#              电话按钮#}
+              {#              电话按钮#}
               <li class="list-inline-item">
                 <a href="#" class="btn btn-success">
                   <i class="fa fa-phone" aria-hidden="true"></i>
                 </a>
               </li>
 
-{#              视频按钮#}
+              {#              视频按钮#}
               <li class="list-inline-item">
                 <a href="#" class="btn btn-secondary">
                   <i class="fa fa-video-camera" aria-hidden="true"></i>
@@ -815,25 +785,25 @@
               {#新更多#}
               <li class="list-inline-item">
                 <a href="#"
-                     data-navigation-target="room—member-info" class="btn btn-secondary">
+                   data-navigation-target="room—member-info" class="btn btn-secondary" id="id_group_info">
                   <i class="ti-more"></i>
                 </a>
               </li>
-{#              更多#}
-{#              <li class="list-inline-item">#}
-{#                <a href="#" class="btn btn-secondary"#}
-{#                   data-toggle="dropdown">#}
-{#                  <i class="ti-more"></i>#}
-{#                </a>#}
-{#                <div class="dropdown-menu dropdown-menu-left">#}
-{#                  <a href="#"#}
-{#                     data-navigation-target="contact-information" class="dropdown-item">Profile</a>#}
-{#                  <a href="#" class="dropdown-item">Add to archive</a>#}
-{#                  <a href="#" class="dropdown-item">Delete</a>#}
-{#                  <div class="dropdown-divider"></div>#}
-{#                  <a href="#" class="dropdown-item">Block</a>#}
-{#                </div>#}
-{#              </li>#}
+              {#              更多#}
+              {#              <li class="list-inline-item">#}
+              {#                <a href="#" class="btn btn-secondary"#}
+              {#                   data-toggle="dropdown">#}
+              {#                  <i class="ti-more"></i>#}
+              {#                </a>#}
+              {#                <div class="dropdown-menu dropdown-menu-left">#}
+              {#                  <a href="#"#}
+              {#                     data-navigation-target="contact-information" class="dropdown-item">Profile</a>#}
+              {#                  <a href="#" class="dropdown-item">Add to archive</a>#}
+              {#                  <a href="#" class="dropdown-item">Delete</a>#}
+              {#                  <div class="dropdown-divider"></div>#}
+              {#                  <a href="#" class="dropdown-item">Block</a>#}
+              {#                </div>#}
+              {#              </li>#}
             </ul>
           </div>
         </div>
@@ -1019,9 +989,8 @@
         </div>
       </div>
       {#资料抽屉#}
-
       {#群成员抽屉#}
-      <div class="sidebar-group">
+      <div class="sidebar-group" id="id_group">
         <div id="room—member-info" class="sidebar">
           <header>
             <span>Members</span>
@@ -1036,30 +1005,22 @@
           <div class="#" style="overflow: hidden; outline: none;" tabindex="6">
             <div class="pl-4 pr-4 text-center">
               <figure class="avatar avatar-state-danger avatar-xl mb-4">
-                <img src="{% static 'images/chat/yeswecode.jpg' %}" class="rounded-circle">
+                <img src="#" class="rounded-circle" id="id_admin_img_path">
               </figure>
-              <h5 class="text-primary">Admin</h5>
-              <p class="text-muted">I am admin</p>
+              <h5 class="text-primary" id="id_admin_name">Admin</h5>
+              <p class="text-muted" id="id_admin_signature">I am admin</p>
             </div>
             <hr>
-            <div class="pl-4 pr-4">
-              <h6>群成员 (2/100)</h6>
+            <div class="pl-4 pr-4" style="overflow: hidden;">
+              <div>
+                <h6 style="float:left" id="id_member_count">群成员 (2/100)</h6>
+                <h6 style="float:right;cursor: pointer" data-toggle="modal"
+                    data-target="#inviteFriends">邀请好友</h6>
+              </div>
             </div>
-            <hr>
-{#          todo#}
-            {% for friend in friends %}
-                <li class="list-group-item">
-                  <div>
-                    <figure class="avatar">
-                      <img src="{{ friend.img_path }}" class="rounded-circle">
-                    </figure>
-                  </div>
-                  <div class="users-list-body">
-                    <h5>{{ friend.nick_name }}</h5>
-                    <p>{{ friend.signature }}</p>
-                  </div>
-                </li>
-              {% endfor %}
+            <div id="id_member_list">
+            </div>
+
           </div>
         </div>
       </div>
@@ -1068,67 +1029,6 @@
 
   </div>
 
-
-  <div id="ascrail2000" class="nicescroll-rails nicescroll-rails-vr"
-       style="width: 4px; z-index: auto; cursor: default; position: absolute; top: 0px; left: -4px; height: 0px; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: relative; top: 0px; float: right; width: 4px; height: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2000-hr" class="nicescroll-rails nicescroll-rails-hr"
-       style="height: 4px; z-index: auto; top: -4px; left: 0px; position: absolute; cursor: default; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: absolute; top: 0px; height: 4px; width: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2001" class="nicescroll-rails nicescroll-rails-vr"
-       style="width: 4px; z-index: auto; cursor: default; position: absolute; top: 136px; left: 2344px; height: 890px; opacity: 0; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: relative; top: 0px; float: right; width: 4px; height: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2001-hr" class="nicescroll-rails nicescroll-rails-hr"
-       style="height: 4px; z-index: auto; top: 1022px; left: 460px; position: absolute; cursor: default; opacity: 0; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: absolute; top: 0px; height: 4px; width: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px; left: 0px;"></div>
-  </div>
-  <div id="ascrail2002" class="nicescroll-rails nicescroll-rails-vr"
-       style="width: 4px; z-index: auto; cursor: default; position: absolute; top: 171px; left: 426px; height: 952px; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: relative; top: 0px; float: right; width: 4px; height: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2002-hr" class="nicescroll-rails nicescroll-rails-hr"
-       style="height: 4px; z-index: auto; top: 1119px; left: 100px; position: absolute; cursor: default; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: absolute; top: 0px; height: 4px; width: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2003" class="nicescroll-rails nicescroll-rails-vr"
-       style="width: 4px; z-index: auto; cursor: default; position: absolute; top: 0px; left: -4px; height: 0px; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: relative; top: 0px; float: right; width: 4px; height: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2003-hr" class="nicescroll-rails nicescroll-rails-hr"
-       style="height: 4px; z-index: auto; top: -4px; left: 0px; position: absolute; cursor: default; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: absolute; top: 0px; height: 4px; width: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2004" class="nicescroll-rails nicescroll-rails-vr"
-       style="width: 4px; z-index: auto; cursor: default; position: absolute; top: 0px; left: -4px; height: 0px; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: relative; top: 0px; float: right; width: 4px; height: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2004-hr" class="nicescroll-rails nicescroll-rails-hr"
-       style="height: 4px; z-index: auto; top: -4px; left: 0px; position: absolute; cursor: default; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: absolute; top: 0px; height: 4px; width: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2005" class="nicescroll-rails nicescroll-rails-vr"
-       style="width: 4px; z-index: auto; cursor: default; position: absolute; top: 0px; left: -4px; height: 0px; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: relative; top: 0px; float: right; width: 4px; height: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
-  <div id="ascrail2005-hr" class="nicescroll-rails nicescroll-rails-hr"
-       style="height: 4px; z-index: auto; top: -4px; left: 0px; position: absolute; cursor: default; display: none;">
-    <div class="nicescroll-cursors"
-         style="position: absolute; top: 0px; height: 4px; width: 0px; background-color: rgba(66, 66, 66, 0.2); border: 0px; background-clip: padding-box; border-radius: 5px;"></div>
-  </div>
   </body>
 {% endblock %}
 {% block script %}
@@ -1166,68 +1066,64 @@
           chatSocket = joinRoom(channel_no);
       });
 
+      function wsConnect(channel_no) {
+          if (!window.localStorage.token) {
+              window.location.href = '/login/'
+          } else {
+              chatSocket = new ReconnectingWebSocket(
+                  'ws://' + window.location.host +
+                  '/ws/chat/' + channel_no + '/?token=Jwt ' + window.localStorage.token);
+          }
+
+          chatSocket.onopen = function (e) {
+              let username = "{{ request.user.username }}";
+              chatSocket.send(JSON.stringify({
+                  'message': username + ' join in',
+                  'msg_type': 'chat_info'
+              }));
+          };
+          chatSocket.onmessage = function (e) {
+              var data = JSON.parse(e.data);
+              var message = data['message'];
+              var msg_type = data['msg_type'];
+              var user_id = data['user_id'];
+              var send_time = data['send_time'];
+              var me = window.localStorage.user_id;
+              if (message) {
+                  if (msg_type === 'chat_message') {
+                      if (user_id === me) {
+                          ChatosExamle.Message.add(message, 'inside-message', send_time);
+                      } else {
+                          ChatosExamle.Message.add(message, 'outgoing-message', send_time);
+                      }
+                  } else {
+
+                      ChatosExamle.Info.add(message, '', '');
+                  }
+              } else {
+                  xtip.msg('不能输入空')
+              }
+          };
+          chatSocket.onclose = function (e) {
+              console.log('Socket is closed. Reconnect will be attempted in 1 second.', e);
+          };
+          chatSocket.onerror = function (e) {
+              console.log('Socket is onerror.', e.reason);
+              chatSocket.close()
+          };
+      }
+
       function join(channel_no) {
           ChatosExamle.Message.delete();
-          try {
-              if (!window.localStorage.token) {
-                  window.location.href = '/login/'
-              } else {
-                  chatSocket = new ReconnectingWebSocket(
-                      'ws://' + window.location.host +
-                      '/ws/chat/' + channel_no + '/?token=Jwt ' + window.localStorage.token);
-              }
-
-          } catch (e) {
-              console.log('aaaa', e.message)
-          }
+          wsConnect(channel_no);
           getChatRoomInfo(channel_no);
           getChatLog(channel_no);
           $('.chatbox').show();
-          if (chatSocket != null) {
-              chatSocket.onopen = function (e) {
-                  let username = "{{ request.user.username }}";
-                  chatSocket.send(JSON.stringify({
-                      'message': username + ' join in',
-                      'msg_type': 'chat_info'
-                  }));
-              };
-              chatSocket.onmessage = function (e) {
-                  var data = JSON.parse(e.data);
-                  var message = data['message'];
-                  var msg_type = data['msg_type'];
-                  var user_id = data['user_id'];
-                  var send_time = data['send_time'];
-                  var me = window.localStorage.user_id;
-                  if (message) {
-                      if (msg_type === 'chat_message') {
-                          if (user_id === me) {
-                              ChatosExamle.Message.add(message, 'inside-message', send_time);
-                          } else {
-                              ChatosExamle.Message.add(message, 'outgoing-message', send_time);
-                              xtip.danmu(message, {light: true, type: 'w', icon: 'h'})
-                          }
-                      } else {
-
-                          ChatosExamle.Info.add(message, '', '');
-                      }
-                  } else {
-                      xtip.msg('不能输入空')
-                  }
-              };
-              chatSocket.onclose = function (e) {
-                  //let username = "{{ request.user.username }}";
-                  //chatSocket.send(JSON.stringify({
-                  //    'message': username + ' leave-taking',
-                  //    'msg_type': 'chat_info'
-                  //}));
-
-              };
-          }
           return chatSocket
       }
 
       function joinRoom(channel_no) {
-          console.log('join ' + channel_no);
+          console.log('join ' + channel_no + chatSocket);
           if (chatSocket == null) {
               return join(channel_no)
           } else {
@@ -1241,8 +1137,8 @@
                   case 2:
                       xtip.msg('正在关闭！');
                       return chatSocket;
-                  case 3:
-                      xtip.msg('发生错误！');
+                  case 3: // closed
+                      join(channel_no);
                       return chatSocket;
               }
           }
@@ -1257,7 +1153,7 @@
                       message = message ? message : 'Lorem ipsum dolor sit amet.';
                       $('.layout .content .chat .chat-body .messages').append('<div class="message-item ' + type + '"><div class="message-content">' + message + '</div><div class="message-action">' + send_time + (type ? '<i class="ti-check"></i>' : '') + '</div></div>');
                       chat_body.scrollTop(chat_body.get(0).scrollHeight, -1).niceScroll({
-                          cursorcolor: 'rgba(66, 66, 66, 0.20)',
+                          cursorcolor: 'rgba(66, 66, 66, 1)',
                           cursorwidth: "4px",
                           cursorborder: '0px'
                       });
@@ -1316,12 +1212,43 @@
           });
       }
 
+      function xTipMsg(content, el_id) {
+          xtip.tips(content, el_id, {
+              bgcolor: '#e6e9e7',
+              times: 2,
+              pos: 'r',
+          });
+      }
+
       function getChatRoomInfo(channel_no) {
           $.get('/api/chat_room/', {'channel_no': channel_no}).success(function (data) {
               $('.id_room_name').html(data[0].room_name);
               $('.id_room_description').html(data[0].room_description);
-              $('.id_room_img').attr('src',data[0].img_path);
+              $('.id_room_img').attr('src', data[0].img_path);
               $('.id_channel_no').html(channel_no);
+              var max_number = data[0].max_number;
+              var members_list = data[0]['members'];
+              var admin_list = data[0]['admins'];
+              $('#id_group').attr('channel_no', channel_no);
+              $('#id_member_count').html('群成员(%s/%s)'.format(members_list.length, max_number));
+              $('#id_admin_name').html(admin_list[0].nick_name);
+              $('#id_admin_signature').html(admin_list[0].signature);
+              $('#id_admin_img_path').attr('src', admin_list[0].img_path);
+              $('#id_member_list').empty();
+
+              $.each(members_list, function (k, v) {
+                  $('#id_member_list').append('<li class=\"list-group-item\">\n' +
+                      '                <div>\n' +
+                      '                  <figure class=\"avatar\">\n' +
+                      '                    <img src=\"' + members_list[k].img_path + '\"' + 'class=\"rounded-circle\">\n' +
+                      '                  </figure>\n' +
+                      '                </div>\n' +
+                      '                <div class=\"users-list-body\">\n' +
+                      '                  <h5>' + members_list[k].nick_name + '</h5>\n' +
+                      '                  <p>' + members_list[k].signature + '</p>\n' +
+                      '                </div>\n' +
+                      '              </li>')
+              });
           })
       }
 
@@ -1340,13 +1267,49 @@
           }
 
       });
-
+      $('#id_create_group').click(function () {
+          var room_name = $('#group_name').val();
+          var room_description = $('#description').val();
+          $.post('/api/chat_room/', {
+              'room_name': room_name,
+              'room_description': room_description
+          }).success(function () {
+              xtip.msg('创建群组成功');
+              $('#newGroup').modal('hide')
+          }).fail(function () {
+              xtip.msg('创建群组失败')
+          })
+      });
       $('#addFriends_btn').click(function () {
           addFriends()
       });
+      $('#id_group_info').on('click', function () {
+          // 执行一些动作...
+          console.log('asdsadasd')
+      });
+      $('#inviteFriends').on('show.bs.modal', function (e) {
+          $('#id_my_friends_list').empty();
+          $.get('/api/friends/').success(function (data) {
+              $.each(data, function (k, v) {
+                  $('#id_my_friends_list').append('<option value="%s">%s</option>\n'.format(v.id,v.nick_name))
+              })
+          })
+      });
+      $('#id_invite_friends').click(function () {
+          var my_friends_list = $('#id_my_friends_list').val();
+          var channel_no = $('#id_group').attr('channel_no');
+          $.ajax({
+              url: '/api/chat_room/%s/?channel_no=%s'.format(channel_no,channel_no),
+              type: 'PUT',
+              data : {'members': my_friends_list},
+              success: function (response) {
+                  xtip.msg('邀请成功');
+              $('#inviteFriends').modal('hide');
+              }
+          });
+
+      });
       $(document).ready(function () {
-
-
       })
 
   </script>
