@@ -1,9 +1,10 @@
 import json
 from datetime import datetime
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.models import AnonymousUser, User
 
 from charles.chat.models import ChatLog, ChatRoom
+from utils.tulingrobot import sizhi
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -59,6 +60,30 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 'username': self.scope.get('user').username
             }
         )
+        if self.room_name == 'robot' and msg_type == 'chat_message':
+            robot_msg = sizhi(message)
+            robot_user = User.objects.filter(username='robot').first()
+            await self.channel_layer.group_send(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message': robot_msg,
+                    'user_id': 'robot',
+                    'send_time': send_time.strftime('%p %H:%M'),
+                    'msg_type': msg_type,
+                    'username': self.scope.get('user').username
+                }
+            )
+            if self.room_name.isdigit():
+                pass
+            else:
+                char_room = ChatRoom.objects.filter(channel_no=self.room_name).first()
+                if message:
+                    ChatLog.objects.create(chat_datetime=send_time,
+                                           content=robot_msg,
+                                           msg_type=msg_type,
+                                           who_said=robot_user,
+                                           said_to_room=char_room)
 
     # Receive message from room group
     async def chat_message(self, event):

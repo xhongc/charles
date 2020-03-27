@@ -36,4 +36,5 @@ class ChatLog(models.Model):
     who_said = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=False, related_name='who_said')
     said_to = models.ForeignKey(User, on_delete=models.CASCADE, db_constraint=False, null=True, blank=True,
                                 related_name='said_to')
-    said_to_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, db_constraint=False, null=True, blank=True)
+    said_to_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, db_constraint=False, null=True, blank=True,
+                                     related_name='said_to_room')

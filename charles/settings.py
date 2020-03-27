@@ -172,7 +172,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'charles_db',
         'USER': 'root',
-        'PASSWORD': 'xhongcc',
+        'PASSWORD': 'xhongc',
         'HOST': '',
         'PORT': '',
     },

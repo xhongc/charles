@@ -18,3 +18,7 @@ urllib3==1.25.3
 django-celery==3.2.2
 django-redis
 flower
+pymysql
+django-cors-headers
+channels
+djangorestframework-jwt
