@@ -6,11 +6,11 @@ from django.db import models
 
 class ChatRoom(models.Model):
     room_name = models.CharField(max_length=64, null=False, blank=False)
-    room_description = models.CharField(max_length=255, null=False, blank=False)
-    img_path = models.CharField(max_length=255, null=False, blank=False)
-    channel_no = models.CharField(max_length=8, null=False, blank=False)
-    admins = models.ManyToManyField('UserProfile', blank=True, related_name='chat_admins')
-    members = models.ManyToManyField('UserProfile', blank=True, related_name='chat_member')
+    room_description = models.CharField(max_length=255, default='这里还没什么描述')
+    img_path = models.CharField(max_length=255, default='/')
+    channel_no = models.CharField(max_length=8, null=False, blank=False, unique=True)
+    admins = models.ManyToManyField('UserProfile', null=False, blank=False, related_name='chat_admins')
+    members = models.ManyToManyField('UserProfile', blank=True, null=True, related_name='chat_member')
     max_number = models.IntegerField(default=5)
 
     def __str__(self):
@@ -26,7 +26,12 @@ class UserProfile(models.Model):
     img_path = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return self.nick_name
+        return self.nick_name + ': ' + str(self.unicode_id)
+
+    def get_my_chat_room(self):
+        chat_member = self.chat_member.all().values_list('channel_no', flat=True)
+        chat_admins = self.chat_admins.all().values_list('channel_no', flat=True)
+        return list(chat_member) + list(chat_admins)
 
 
 class ChatLog(models.Model):

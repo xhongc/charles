@@ -1,24 +1,36 @@
 import json
 from datetime import datetime
 from channels.generic.websocket import AsyncWebsocketConsumer
-from django.contrib.auth.models import AnonymousUser, User
 
 from charles.chat.models import ChatLog, ChatRoom
 from utils.tulingrobot import sizhi
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    def __init__(self, *args, **kwargs):
+        super(ChatConsumer, self).__init__(*args, **kwargs)
+        self.room_name = 'chat'
+        self.room_group_name = 'chat'
+
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
+        room_channel_no = self.scope['url_route']['kwargs']['room_name']
+        if self.scope["user"].is_anonymous:
+            # Reject the connection
+            await self.close()
+        elif room_channel_no in self.scope["user"].profile.get_my_chat_room():
+            # Reject the connection
+            self.room_name = room_channel_no
+            self.room_group_name = 'chat_%s' % self.room_name
 
-        # Join room group
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
+            # Join room group
+            await self.channel_layer.group_add(
+                self.room_group_name,
+                self.channel_name
+            )
 
-        await self.accept()
+            await self.accept()
+        else:
+            await self.close()
 
     async def disconnect(self, close_code):
         # Leave room group
@@ -28,14 +40,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     # Receive message from WebSocket
-    async def receive(self, text_data):
+    async def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         msg_type = text_data_json['msg_type']
-        if isinstance(self.scope.get('user'), AnonymousUser):
-            chat_user = 'Guest'
-        else:
-            chat_user = self.scope.get('user')
+        chat_user = self.scope.get('user')
         send_time = datetime.now()
         if msg_type == 'chat_message':
             if self.room_name.isdigit():
@@ -48,6 +57,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                                            msg_type=msg_type,
                                            who_said=chat_user,
                                            said_to_room=char_room)
+        elif msg_type == 'chat_info':
+            pass
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,

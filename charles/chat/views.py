@@ -13,7 +13,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from charles.chat.filters import ChatRoomFilter
 from charles.chat.models import ChatRoom, ChatLog
 from charles.chat.serializers import FriendsSerializers, ListFriendsSerializers, PostChatLogSerializers, \
-    ChatRoomSerializers, ListChatLogSerializers
+    ChatRoomSerializers, ListChatLogSerializers, ListChatRoomSerializers, UpdateChatRoomSerializers
 from utils.base_serializer import BasePagination
 
 
@@ -76,11 +76,22 @@ class ChatLogViewsets(mixins.ListModelMixin, GenericViewSet):
         return Response(serializer.data)
 
 
-class ChatRoomViewsets(mixins.ListModelMixin, GenericViewSet):
+class ChatRoomViewsets(mixins.ListModelMixin,
+                       mixins.CreateModelMixin,
+                       mixins.RetrieveModelMixin,
+                       mixins.UpdateModelMixin, GenericViewSet):
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
-    serializer_class = ChatRoomSerializers
+    permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ChatRoomFilter
+    lookup_field = 'channel_no'
 
     def get_queryset(self):
         return ChatRoom.objects.filter(channel_no=self.request.query_params.get('channel_no'))
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ListChatRoomSerializers
+        elif self.action == 'update':
+            return UpdateChatRoomSerializers
+        return ChatRoomSerializers
