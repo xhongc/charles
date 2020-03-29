@@ -75,7 +75,7 @@ class ListChatRoomSerializers(serializers.ModelSerializer):
     class Meta:
         model = ChatRoom
         fields = '__all__'
-#todo 加好友 不在群里的 报错ws 不要执行任何
+
 
 class UpdateChatRoomSerializers(serializers.ModelSerializer):
     class Meta:
@@ -86,5 +86,7 @@ class UpdateChatRoomSerializers(serializers.ModelSerializer):
         return self.initial_data.getlist('members[]')
 
     def save(self, **kwargs):
-        print(self.validated_data)
-        print(self.initial_data.getlist('members[]'))
+        members_id = self.validated_data.get('members')
+        member_list = (UserProfile.objects.get(id=id) for id in members_id)
+        self.instance.members.add(*member_list)
+        self.instance.save()

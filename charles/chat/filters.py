@@ -9,3 +9,4 @@ class ChatRoomFilter(django_filters.FilterSet):
     class Meta:
         model = ChatRoom
         fields = ['channel_no']
+

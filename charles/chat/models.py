@@ -23,7 +23,7 @@ class UserProfile(models.Model):
     signature = models.CharField(max_length=255, null=True, blank=True)
     friends = models.ManyToManyField('self', related_name='my_friends', blank=True)
     unicode_id = models.IntegerField(default=-1, blank=False, null=False, unique=True)
-    img_path = models.CharField(max_length=255, null=True, blank=True)
+    img_path = models.CharField(max_length=255, default='/')
 
     def __str__(self):
         return self.nick_name + ': ' + str(self.unicode_id)

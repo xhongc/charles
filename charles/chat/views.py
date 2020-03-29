@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins
@@ -37,7 +38,11 @@ class FriendsViewsets(mixins.CreateModelMixin, mixins.ListModelMixin, GenericVie
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return self.request.user.profile.friends.all()
+        channel_no = self.request.query_params.get('channel_no', None)
+        if channel_no:
+            return self.request.user.profile.friends.exclude(chat_member__channel_no=channel_no).exclude(
+                chat_admins__channel_no=channel_no)
+        return self.request.user.profile.friends.all('')
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -80,6 +85,16 @@ class ChatRoomViewsets(mixins.ListModelMixin,
                        mixins.CreateModelMixin,
                        mixins.RetrieveModelMixin,
                        mixins.UpdateModelMixin, GenericViewSet):
+    """
+        list:
+        查看房间信息成员和创建者
+        create:
+        创建房间
+        retrieve:
+        查看特定房间号信息
+        update:
+        邀请好友到该房间
+    """
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
     filter_backends = (DjangoFilterBackend,)
@@ -87,7 +102,11 @@ class ChatRoomViewsets(mixins.ListModelMixin,
     lookup_field = 'channel_no'
 
     def get_queryset(self):
-        return ChatRoom.objects.filter(channel_no=self.request.query_params.get('channel_no'))
+        channel_no = self.request.query_params.get('channel_no', None)
+        if channel_no:
+            return ChatRoom.objects.filter(channel_no=channel_no)
+        else:
+            return ChatRoom.objects.filter(Q(admins=self.request.user.profile) | Q(members=self.request.user.profile)).distinct()
 
     def get_serializer_class(self):
         if self.action == 'list':
