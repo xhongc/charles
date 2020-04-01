@@ -20,7 +20,6 @@ from utils.base_serializer import BasePagination
 
 @login_required(login_url='/login/')
 def index(request):
-    char_rooms = ChatRoom.objects.all()
     friends = request.user.profile.friends.all()
     return render(request, 'chat/boot_chat.html', locals())
 
@@ -106,7 +105,7 @@ class ChatRoomViewsets(mixins.ListModelMixin,
         if channel_no:
             return ChatRoom.objects.filter(channel_no=channel_no)
         else:
-            return ChatRoom.objects.filter(Q(admins=self.request.user.profile) | Q(members=self.request.user.profile)).distinct()
+            return ChatRoom.objects.filter(Q(admins=self.request.user.profile) | Q(members=self.request.user.profile)).distinct().order_by('ordering')
 
     def get_serializer_class(self):
         if self.action == 'list':

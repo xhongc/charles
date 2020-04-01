@@ -9,9 +9,10 @@ class ChatRoom(models.Model):
     room_description = models.CharField(max_length=255, default='这里还没什么描述')
     img_path = models.CharField(max_length=255, default='/')
     channel_no = models.CharField(max_length=8, null=False, blank=False, unique=True)
-    admins = models.ManyToManyField('UserProfile', null=False, blank=False, related_name='chat_admins')
-    members = models.ManyToManyField('UserProfile', blank=True, null=True, related_name='chat_member')
+    admins = models.ManyToManyField('UserProfile', related_name='chat_admins')
+    members = models.ManyToManyField('UserProfile', related_name='chat_member')
     max_number = models.IntegerField(default=5)
+    ordering = models.IntegerField(default=99)
 
     def __str__(self):
         return self.room_name

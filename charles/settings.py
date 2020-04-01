@@ -72,6 +72,8 @@ INSTALLED_APPS = [
     'channels',
     'charles.shorturl',
     'charles.chat',
+    'xadmin',
+    'reversion',
 ]
 REST_FRAMEWORK = {
     # 'DEFAULT_FILTER_BACKENDS': (
@@ -172,7 +174,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'charles_db',
         'USER': 'root',
-        'PASSWORD': 'xhongc',
+        'PASSWORD': 'xhongcc',
         'HOST': '',
         'PORT': '',
     },

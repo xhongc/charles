@@ -69,9 +69,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             pass
         # Send message to room group
         await self.channel_layer.group_send(
-            self.room_group_name,
+            'notification_666',
             {
-                'type': 'chat_message',
+                'type': 'push_message',
                 'message': message,
                 'user_id': str(chat_user.id),
                 'send_time': send_time.strftime('%p %H:%M'),
@@ -119,4 +119,71 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'type': type,
             'msg_type': msg_type,
             'username': username,
+        }))
+
+    async def push_message(self, event):
+        print(event)
+        await self.send(text_data=json.dumps({
+            "event": event['event']
+        }))
+
+class NotificationConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        uid = self.scope['url_route']['kwargs']['uid']
+        if self.scope["user"].is_anonymous:
+            # Reject the connection
+            await self.close()
+        else:
+            self.uid = uid
+            self.uid_group = 'notification_%s' % self.uid
+
+            # Join room group
+            await self.channel_layer.group_add(
+                self.uid_group,
+                self.channel_name
+            )
+
+            await self.accept()
+
+    async def disconnect(self, close_code):
+        # Leave room group
+        await self.channel_layer.group_discard(
+            self.uid_group,
+            self.channel_name
+        )
+
+    async def receive(self, text_data=None, bytes_data=None):
+        await self.channel_layer.group_send(
+            self.uid_group,
+            {
+                'type': 'chat_message',
+                'message': 'message',
+                'user_id': '',
+                'send_time': '',
+                'msg_type': '',
+                'username': self.scope.get('user').username
+            }
+        )
+
+    async def chat_message(self, event):
+        message = event['message']
+        user_id = event['user_id']
+        send_time = event['send_time']
+        type = event['type']
+        msg_type = event['msg_type']
+        username = event['username']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'user_id': user_id,
+            'send_time': send_time,
+            'type': type,
+            'msg_type': msg_type,
+            'username': username,
+        }))
+
+    async def push_message(self, event):
+        print(event)
+        await self.send(text_data=json.dumps({
+            "event": '123'
         }))

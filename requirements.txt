@@ -22,3 +22,6 @@ pymysql
 django-cors-headers
 channels
 djangorestframework-jwt
+https://codeload.github.com/sshwsfc/xadmin/zip/django2
+django-crispy-forms
+django-reversion
