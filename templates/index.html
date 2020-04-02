@@ -1,280 +1,290 @@
 {% extends "base.html" %}
+
 {% block body %}
-  <div class="loader">
-    <div>
-      <img src="static/images/icons/preloader.gif"/>
-    </div>
-  </div>
-
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-5 left-wrapper">
-        <div class="event-banner-wrapper">
-          <div class="logo">
-            <h1>Stage</h1>
-          </div>
-
-          <h2>
-            Music<br>Concert Live
-            <span id="time"></span>
-          </h2>
+    <div class="loader">
+        <div>
+            <img src="static/images/icons/preloader.gif"/>
         </div>
-      </div>
-      <div class="col-sm-7 right-wrapper">
-        <div class="event-ticket-wrapper">
+    </div>
 
-          <div class="event-tab">
-
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-              <li role="presentation" class="active"><a href="#buyTicket" aria-controls="buyTicket" role="tab"
-                                                        data-toggle="tab">My Servers</a></li>
-              <li role="presentation"><a href="#venue" aria-controls="venue" role="tab" data-toggle="tab">Blog</a></li>
-
-
-              <li role="presentation"><a href="#termCondition" aria-controls="termCondition" role="tab"
-                                         data-toggle="tab">Terms
-                & Conditions</a></li>
-            </ul>
-
-            <!-- Tab panes -->
-            <div class="tab-content">
-              <div role="tabpanel" class="tab-pane fade in active" id="buyTicket">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="ticketBox" data-url="shorturl/"
-                         onclick="redirectUrl(this)">
-                      <div class="topLine"></div>
-                      <div class="rightLine"></div>
-                      <div class="bottomLine"></div>
-                      <div class="leftLine"></div>
-                      <div class="inactiveStatus"></div>
-
-                      <div class="row">
-                        <div class="col-xs-6">
-                          <div class="ticket-name">
-                            ShortUrl
-                            <span><br>
-                            a short url server</span>
-                          </div>
-                        </div>
-                        <div class="col-xs-6">
-                          <div class="ticket-price-count-box">
-                            <div class="ticket-control">
-                              <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                <img src="static/images/project/url.png">
-                                <span class="input-group-btn">
-                              </span>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ticket-description">
-                        <p><strong>Please read the introduction:</strong><br>The short URL service can turn a long URL
-                          into a short URL,
-                          which is convenient for spreading on social networks.
-                        </p>
-                      </div>
-
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-5 left-wrapper">
+                <div class="event-banner-wrapper">
+                    <div class="logo">
+                        <h1>Stage</h1>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="ticketBox" data-url="generateid/"
-                         onclick="redirectUrl(this)">
-                      <div class="topLine"></div>
-                      <div class="rightLine"></div>
-                      <div class="bottomLine"></div>
-                      <div class="leftLine"></div>
-                      <div class="inactiveStatus"></div>
 
-                      <div class="row">
-                        <div class="col-xs-6">
-                          <div class="ticket-name">
-                            GenerateID.
-                            <span>a generate id number server</span>
-                          </div>
-                        </div>
-                        <div class="col-xs-6">
-                          <div class="ticket-price-count-box">
-                            <div class="ticket-control">
-                              <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                <img src="static/images/project/id_card.png">
-                                <span class="input-group-btn">
-                              </span>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ticket-description">
-                        <p><strong>Please read the introduction:</strong><br>Daquan ID and name are randomly combined by
-                          the program<br>&nbsp;
-                        </p>
-                      </div>
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="ticketBox" data-url="chat/"
-                         onclick="redirectUrl(this)">
-                      <div class="topLine"></div>
-                      <div class="rightLine"></div>
-                      <div class="bottomLine"></div>
-                      <div class="leftLine"></div>
-                      <div class="inactiveStatus"></div>
-
-                      <div class="row">
-                        <div class="col-xs-6">
-                          <div class="ticket-name">
-                            Chat
-                            <span>a common chat room</span>
-                          </div>
-                        </div>
-                        <div class="col-xs-6">
-                          <div class="ticket-price-count-box">
-                            <div class="ticket-control">
-                              <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                <img src="static/images/project/chat.png">
-                                <span class="input-group-btn">
-                              </span>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ticket-description">
-                        <p><strong>Please read the introduction:</strong><br>Chat every day and be happy every day<br>&nbsp;
-                        </p>
-                      </div>
-
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="ticketBox" data-url="docs/"
-                         onclick="redirectUrl(this)">
-                      <div class="topLine"></div>
-                      <div class="rightLine"></div>
-                      <div class="bottomLine"></div>
-                      <div class="leftLine"></div>
-                      <div class="inactiveStatus"></div>
-
-                      <div class="row">
-                        <div class="col-xs-6">
-                          <div class="ticket-name">
-                            Api Docs.
-                            <span>a api documents</span>
-                          </div>
-                        </div>
-                        <div class="col-xs-6">
-                          <div class="ticket-price-count-box">
-                            <div class="ticket-control">
-                              <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                <img src="static/images/project/id_card.png">
-                                <span class="input-group-btn">
-                              </span>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ticket-description">
-                        <p><strong>Please read the introduction:</strong><br>Daquan ID and name are randomly combined by
-                          the program<br>&nbsp;
-                        </p>
-                      </div>
-
-                    </div>
-                  </div>
-                    <div class="col-md-6">
-                    <div class="ticketBox" data-url="xadmin/"
-                         onclick="redirectUrl(this)">
-                      <div class="topLine"></div>
-                      <div class="rightLine"></div>
-                      <div class="bottomLine"></div>
-                      <div class="leftLine"></div>
-                      <div class="inactiveStatus"></div>
-
-                      <div class="row">
-                        <div class="col-xs-6">
-                          <div class="ticket-name">
-                            Admin docs.
-                            <span>a admin backend</span>
-                          </div>
-                        </div>
-                        <div class="col-xs-6">
-                          <div class="ticket-price-count-box">
-                            <div class="ticket-control">
-                              <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                <img src="static/images/project/id_card.png">
-                                <span class="input-group-btn">
-                              </span>
-                              </div>
-                            </div>
-
-                          </div>
-                        </div>
-                      </div>
-                      <div class="ticket-description">
-                        <p><strong>Please read the introduction:</strong><br>Daquan ID and name are randomly combined by
-                          the program<br>&nbsp;
-                        </p>
-                      </div>
-
-                    </div>
-                  </div>
+                    <h2>
+                        Music<br>Concert Live
+                        <span id="time"></span>
+                    </h2>
                 </div>
-              </div>
-              <div role="tabpanel" class="tab-pane fade" id="venue">
-                <h4> Lorem ipsum dolor sit amet,<br> consectetur adipiscing elit,<br> sed do eiusmod<br> Pune 411058
-                </h4>
-                <br>
-
-              </div>
-              <div role="tabpanel" class="tab-pane fade" id="termCondition">
-                <p></p>
-              </div>
             </div>
+            <div class="col-sm-7 right-wrapper">
+                <div class="event-ticket-wrapper">
 
-          </div>
+                    <div class="event-tab">
 
-          <div class="cart">
-            <div class="row">
-              <div class="col-xs-6">
-                <p>Someone Like You</p>
-              </div>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#buyTicket" aria-controls="buyTicket"
+                                                                      role="tab"
+                                                                      data-toggle="tab">My Servers</a></li>
+                            <li role="presentation"><a href="#venue" aria-controls="venue" role="tab" data-toggle="tab">Blog</a>
+                            </li>
+
+
+                            <li role="presentation"><a href="#termCondition" aria-controls="termCondition" role="tab"
+                                                       data-toggle="tab">Terms
+                                & Conditions</a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade in active" id="buyTicket">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="ticketBox" data-url="shorturl/"
+                                             onclick="redirectUrl(this)">
+                                            <div class="topLine"></div>
+                                            <div class="rightLine"></div>
+                                            <div class="bottomLine"></div>
+                                            <div class="leftLine"></div>
+                                            <div class="inactiveStatus"></div>
+
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-name">
+                                                        ShortUrl
+                                                        <span><br>
+                            a short url server</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-price-count-box">
+                                                        <div class="ticket-control">
+                                                            <div class="input-group">
+                              <span class="input-group-btn">
+                              </span>
+                                                                <img src="static/images/project/url.png">
+                                                                <span class="input-group-btn">
+                              </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ticket-description">
+                                                <p><strong>Please read the introduction:</strong><br>The short URL
+                                                    service can turn a long URL
+                                                    into a short URL,
+                                                    which is convenient for spreading on social networks.
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="ticketBox" data-url="generateid/"
+                                             onclick="redirectUrl(this)">
+                                            <div class="topLine"></div>
+                                            <div class="rightLine"></div>
+                                            <div class="bottomLine"></div>
+                                            <div class="leftLine"></div>
+                                            <div class="inactiveStatus"></div>
+
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-name">
+                                                        GenerateID.
+                                                        <span>a generate id number server</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-price-count-box">
+                                                        <div class="ticket-control">
+                                                            <div class="input-group">
+                              <span class="input-group-btn">
+                              </span>
+                                                                <img src="static/images/project/id_card.png">
+                                                                <span class="input-group-btn">
+                              </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ticket-description">
+                                                <p><strong>Please read the introduction:</strong><br>Daquan ID and name
+                                                    are randomly combined by
+                                                    the program<br>&nbsp;
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="ticketBox" data-url="chat/"
+                                             onclick="redirectUrl(this)">
+                                            <div class="topLine"></div>
+                                            <div class="rightLine"></div>
+                                            <div class="bottomLine"></div>
+                                            <div class="leftLine"></div>
+                                            <div class="inactiveStatus"></div>
+
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-name">
+                                                        Chat
+                                                        <span>a common chat room</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-price-count-box">
+                                                        <div class="ticket-control">
+                                                            <div class="input-group">
+                              <span class="input-group-btn">
+                              </span>
+                                                                <img src="static/images/project/chat.png">
+                                                                <span class="input-group-btn">
+                              </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ticket-description">
+                                                <p><strong>Please read the introduction:</strong><br>Chat every day and
+                                                    be happy every day<br>&nbsp;
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="ticketBox" data-url="docs/"
+                                             onclick="redirectUrl(this)">
+                                            <div class="topLine"></div>
+                                            <div class="rightLine"></div>
+                                            <div class="bottomLine"></div>
+                                            <div class="leftLine"></div>
+                                            <div class="inactiveStatus"></div>
+
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-name">
+                                                        Api Docs.
+                                                        <span>a api documents</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-price-count-box">
+                                                        <div class="ticket-control">
+                                                            <div class="input-group">
+                              <span class="input-group-btn">
+                              </span>
+                                                                <img src="static/images/project/id_card.png">
+                                                                <span class="input-group-btn">
+                              </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ticket-description">
+                                                <p><strong>Please read the introduction:</strong><br>Daquan ID and name
+                                                    are randomly combined by
+                                                    the program<br>&nbsp;
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="ticketBox" data-url="xadmin/"
+                                             onclick="redirectUrl(this)">
+                                            <div class="topLine"></div>
+                                            <div class="rightLine"></div>
+                                            <div class="bottomLine"></div>
+                                            <div class="leftLine"></div>
+                                            <div class="inactiveStatus"></div>
+
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-name">
+                                                        Admin docs.
+                                                        <span>a admin backend</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <div class="ticket-price-count-box">
+                                                        <div class="ticket-control">
+                                                            <div class="input-group">
+                              <span class="input-group-btn">
+                              </span>
+                                                                <img src="static/images/project/id_card.png">
+                                                                <span class="input-group-btn">
+                              </span>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ticket-description">
+                                                <p><strong>Please read the introduction:</strong><br>Daquan ID and name
+                                                    are randomly combined by
+                                                    the program<br>&nbsp;
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="venue">
+                                <h4> Lorem ipsum dolor sit amet,<br> consectetur adipiscing elit,<br> sed do eiusmod<br>
+                                    Pune 411058
+                                </h4>
+                                <br>
+
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="termCondition">
+                                <p></p>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="cart">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <p>Someone Like You</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-          </div>
-
         </div>
-      </div>
     </div>
-  </div>
 
 
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="static/js/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <script src="static/js/bootstrap.min.js"></script>
-  <script src="static/js/allscript.js"></script>
-  <script>
-      $(document).ready(function () {
-          showTime();
-      })
-  </script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="static/js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="static/js/bootstrap.min.js"></script>
+    <script src="static/js/allscript.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            showTime();
+        })
+    </script>
 
 {% endblock %}

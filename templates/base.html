@@ -33,7 +33,7 @@
   <link rel="stylesheet" href="{% static 'css/xui.css' %}">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/LobiBox.min.css' %}">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -51,6 +51,10 @@
 <script src="{% static 'adminLTE/plugins/respond/1.4.2/respond.min.js' %}"></script>
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/xtiper.min.js' %}"></script>
+<script src="{% static 'js/lobibox.min.js' %}"></script>
+<script src="{% static 'js/notifications.min.js' %}"></script>
+<script src="{% static 'chat/re-websocket.min.js' %}"></script>
+
 <script>
     String.prototype.format = function () {
         //将arguments转化为数组（ES5中并非严格的数组）
@@ -78,6 +82,52 @@
             }
         }
     });
+     var uid = "{{ user.profile.unicode_id }}";
+    notificationConnect(uid);
+    function notificationConnect(uid) {
+                if (!window.localStorage.token) {
+                    window.location.href = '/login/'
+                } else {
+                    if (uid === undefined) {
+                        return false
+                    } else {
+                        ntfSocket = new ReconnectingWebSocket(
+                            'ws://' + window.location.host +
+                            '/ws/notification/' + uid + '/?token=Jwt ' + window.localStorage.token);
+                    }
+                }
+                ntfSocket.onopen = function (e) {
+                    $('#id_online').html('Online')
+                };
+                ntfSocket.onmessage = function (e) {
+                    var data = JSON.parse(e.data);
+                    Lobibox.notify(
+                        // 'warning', 'info', 'success', 'error'
+                        'error',
+                        {
+                            title: false,
+                            size: 'normal',
+                            showClass: 'flipInX',
+                            hideClass: 'zoomOutDown',
+                            msg: data['message'],
+                            icon: false,
+                            delay: 6000,
+                            img: '/static/images/chat/ten.jpg',
+                            closable: true,
+                            closeOnClick: true,
+                            soundPath: '/src/sounds/',
+
+                        }
+                    );
+                };
+                ntfSocket.onclose = function (e) {
+                };
+                ntfSocket.onerror = function (e) {
+                    ntfSocket.close()
+                };
+                return true
+            }
+
 </script>
 {% block script %} {% endblock %}
 </html>

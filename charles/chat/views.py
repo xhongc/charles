@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from charles.chat.filters import ChatRoomFilter
+from charles.chat.filters import ChatRoomFilter, ChatLogFilter
 from charles.chat.models import ChatRoom, ChatLog
 from charles.chat.serializers import FriendsSerializers, ListFriendsSerializers, PostChatLogSerializers, \
     ChatRoomSerializers, ListChatLogSerializers, ListChatRoomSerializers, UpdateChatRoomSerializers
@@ -56,6 +56,8 @@ class FriendsViewsets(mixins.CreateModelMixin, mixins.ListModelMixin, GenericVie
 class ChatLogViewsets(mixins.ListModelMixin, GenericViewSet):
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     pagination_class = BasePagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = ChatLogFilter
 
     def get_serializer_class(self, *args, **kwargs):
         if self.action == 'list':
@@ -65,8 +67,7 @@ class ChatLogViewsets(mixins.ListModelMixin, GenericViewSet):
     def get_queryset(self):
         start = datetime.now().date()
         end = start + timedelta(days=1)
-        return ChatLog.objects.filter(said_to_room__channel_no=self.request.query_params.get('channel_no'),
-                                      chat_datetime__range=(start, end)).order_by('-chat_datetime')
+        return ChatLog.objects.filter(chat_datetime__range=(start, end)).order_by('-chat_datetime')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -74,6 +75,10 @@ class ChatLogViewsets(mixins.ListModelMixin, GenericViewSet):
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
+            # 把未读变成已读
+            queryset.filter(status='unread', said_to=request.user,
+                            said_to_room__channel_no=request.query_params.get('said_to_room__channel_no')).update(
+                status='read')
             return self.get_paginated_response(serializer.data[::-1])
 
         serializer = self.get_serializer(queryset, many=True)
@@ -105,7 +110,9 @@ class ChatRoomViewsets(mixins.ListModelMixin,
         if channel_no:
             return ChatRoom.objects.filter(channel_no=channel_no)
         else:
-            return ChatRoom.objects.filter(Q(admins=self.request.user.profile) | Q(members=self.request.user.profile)).distinct().order_by('ordering')
+            return ChatRoom.objects.filter(
+                Q(admins=self.request.user.profile) | Q(members=self.request.user.profile)).distinct().order_by(
+                'ordering')
 
     def get_serializer_class(self):
         if self.action == 'list':

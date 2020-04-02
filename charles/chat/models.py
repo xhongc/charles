@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -16,6 +18,16 @@ class ChatRoom(models.Model):
 
     def __str__(self):
         return self.room_name
+
+    def get_members_unicode_id(self):
+        member_list = list(self.members.values_list('unicode_id', flat=True))
+        admin_list = list(self.admins.values_list('unicode_id', flat=True))
+        return member_list + admin_list
+
+    def get_members(self):
+        member_list = self.members.all()
+        admin_list = self.admins.all()
+        return chain(member_list, admin_list)
 
 
 class UserProfile(models.Model):
@@ -44,3 +56,4 @@ class ChatLog(models.Model):
                                 related_name='said_to')
     said_to_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, db_constraint=False, null=True, blank=True,
                                      related_name='said_to_room')
+    status = models.CharField(max_length=16, default='read')

@@ -57,4 +57,5 @@ urlpatterns = [
 if settings.DEBUG:
     urlpatterns += [
         url(r'^static/(?P<path>.*)$', views.serve),
+        url(r'^src/(?P<path>.*)$', views.serve),
     ]

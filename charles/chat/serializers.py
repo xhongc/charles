@@ -46,7 +46,7 @@ class ListChatLogSerializers(serializers.ModelSerializer):
 
     class Meta:
         model = ChatLog
-        fields = '__all__'
+        fields = ('content', 'chat_datetime', 'who_said')
 
 
 class ChatRoomSerializers(serializers.ModelSerializer):
@@ -71,6 +71,14 @@ class ChatRoomSerializers(serializers.ModelSerializer):
 class ListChatRoomSerializers(serializers.ModelSerializer):
     admins = ListFriendsSerializers(many=True)
     members = ListFriendsSerializers(many=True)
+    unread_no = serializers.SerializerMethodField()
+
+    def get_unread_no(self, obj):
+        request = self._context.get('request')
+        unread_no = obj.said_to_room.filter(status='unread', said_to=request.user).count()
+        if not unread_no:
+            unread_no = ''
+        return unread_no
 
     class Meta:
         model = ChatRoom
