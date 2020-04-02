@@ -1100,8 +1100,8 @@
             };
             ntfSocket.onmessage = function (e) {
                 var data = JSON.parse(e.data);
-                var message = data['message'];
-                var that = $('li[id=%s]'.format(message)).find('#id_badge_ntf');
+                var channel_no = data['channel_no'];
+                var that = $('li[id=%s]'.format(channel_no)).find('#id_badge_ntf');
                 var count = parseInt(that.html()) || 0;
                 count += 1;
                 that.html(count)
@@ -1324,6 +1324,7 @@
                 chatSocket.send(JSON.stringify({
                     'message': message,
                     'msg_type': 'chat_message',
+                    'send_user_uid': "{{ user.profile.nick_name }}"
                 }));
                 messageInputDom.val('');
             } else {

@@ -71,6 +71,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         msg_type = text_data_json['msg_type']
+        send_user_uid = text_data_json.get('send_user_uid','') or ''
         chat_user = self.scope.get('user')
         send_time = datetime.now()
         # 机器人 加思知回复
@@ -109,11 +110,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         'notification_%s' % (ntf),
                         {
                             'type': 'push_message',
-                            'message': self.room_name,
+                            'message': message,
                             'user_id': str(chat_user.id),
                             'send_time': send_time.strftime('%p %H:%M'),
                             'msg_type': msg_type,
-                            'username': self.scope.get('user').username
+                            'channel_no': self.room_name,
+                            'send_user_uid': send_user_uid,
                         }
                     )
                 if message:
@@ -143,7 +145,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         'user_id': str(chat_user.id),
                         'send_time': send_time.strftime('%p %H:%M'),
                         'msg_type': msg_type,
-                        'username': self.scope.get('user').username
                     }
                 )
         elif msg_type == 'chat_info':
@@ -155,7 +156,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     'user_id': str(chat_user.id),
                     'send_time': send_time.strftime('%p %H:%M'),
                     'msg_type': msg_type,
-                    'username': self.scope.get('user').username
                 }
             )
 
@@ -166,7 +166,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
         send_time = event['send_time']
         type = event['type']
         msg_type = event['msg_type']
-        username = event['username']
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
@@ -174,7 +173,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'send_time': send_time,
             'type': type,
             'msg_type': msg_type,
-            'username': username,
         }))
 
     async def push_message(self, event):
@@ -220,12 +218,17 @@ class NotificationConsumer(AsyncWebsocketConsumer):
                 'user_id': '',
                 'send_time': '',
                 'msg_type': '',
-                'username': self.scope.get('user').username
             }
         )
 
     async def push_message(self, event):
+        channel_no = event['channel_no']
         message = event['message']
+        send_user_uid = event['send_user_uid']
+        chat_room = ChatRoom.objects.filter(channel_no=channel_no).first()
         await self.send(text_data=json.dumps({
-            "message": message
+            "channel_no": channel_no,
+            'message': message,
+            'img': chat_room.img_path,
+            'send_user_nick_name': send_user_uid
         }))

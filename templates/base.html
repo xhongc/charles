@@ -51,8 +51,8 @@
 <script src="{% static 'adminLTE/plugins/respond/1.4.2/respond.min.js' %}"></script>
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script src="{% static 'js/xtiper.min.js' %}"></script>
-<script src="{% static 'js/lobibox.min.js' %}"></script>
 <script src="{% static 'js/notifications.min.js' %}"></script>
+<script src="{% static 'js/lobibox.min.js' %}"></script>
 <script src="{% static 'chat/re-websocket.min.js' %}"></script>
 
 <script>
@@ -105,14 +105,14 @@
                         // 'warning', 'info', 'success', 'error'
                         'error',
                         {
-                            title: false,
+                            title: data['send_user_nick_name'],
                             size: 'normal',
                             showClass: 'flipInX',
                             hideClass: 'zoomOutDown',
                             msg: data['message'],
                             icon: false,
                             delay: 6000,
-                            img: '/static/images/chat/ten.jpg',
+                            img: data['img'],
                             closable: true,
                             closeOnClick: true,
                             soundPath: '/src/sounds/',
