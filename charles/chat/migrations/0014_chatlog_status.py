@@ -15,4 +15,9 @@ class Migration(migrations.Migration):
             name='status',
             field=models.CharField(default='read', max_length=16),
         ),
+        migrations.AlterField(
+            model_name='chatroom',
+            name='members',
+            field=models.ManyToManyField(related_name='chat_member', to='chat.UserProfile'),
+        ),
     ]

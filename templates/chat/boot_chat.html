@@ -1363,11 +1363,12 @@
         });
         $('#id_invite_friends').click(function () {
             var my_friends_list = $('#id_my_friends_list').val();
+            console.log(my_friends_list);
             var channel_no = $('#id_group').attr('channel_no');
             $.ajax({
                 url: '/api/chat_room/%s/?channel_no=%s'.format(channel_no, channel_no),
                 type: 'PUT',
-                data: {'members': my_friends_list},
+                data: {'members': JSON.stringify(my_friends_list)},
                 success: function (response) {
                     xtip.msg('邀请成功');
                     $('#inviteFriends').modal('hide');
