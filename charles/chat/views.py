@@ -67,7 +67,8 @@ class ChatLogViewsets(mixins.ListModelMixin, GenericViewSet):
     def get_queryset(self):
         start = datetime.now().date()
         end = start + timedelta(days=1)
-        return ChatLog.objects.filter(chat_datetime__range=(start, end)).order_by('-chat_datetime')
+        return ChatLog.objects.filter(chat_datetime__range=(start, end), said_to=self.request.user).order_by(
+            '-chat_datetime')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -101,8 +102,8 @@ class ChatRoomViewsets(mixins.ListModelMixin,
     """
     authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticated,)
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = ChatRoomFilter
+    # filter_backends = (DjangoFilterBackend,)
+    # filterset_class = ChatRoomFilter
     lookup_field = 'channel_no'
 
     def get_queryset(self):
@@ -120,3 +121,17 @@ class ChatRoomViewsets(mixins.ListModelMixin,
         elif self.action == 'update':
             return UpdateChatRoomSerializers
         return ChatRoomSerializers
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)

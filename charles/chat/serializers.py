@@ -1,4 +1,5 @@
 import random
+import json
 
 from rest_framework import serializers
 
@@ -86,15 +87,18 @@ class ListChatRoomSerializers(serializers.ModelSerializer):
 
 
 class UpdateChatRoomSerializers(serializers.ModelSerializer):
+    members = serializers.CharField()
+
     class Meta:
         model = ChatRoom
         fields = ('members',)
 
     def validate_members(self, attrs):
-        return self.initial_data.getlist('members[]')
+        return json.loads(self.initial_data.get('members'))
 
     def save(self, **kwargs):
         members_id = self.validated_data.get('members')
+        member_count = len(set(members_id)) + self.instance.members.count() + self.instance.admins.count()
         member_list = (UserProfile.objects.get(id=id) for id in members_id)
         self.instance.members.add(*member_list)
         self.instance.save()
