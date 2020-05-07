@@ -72,6 +72,8 @@ INSTALLED_APPS = [
     'channels',
     'charles.shorturl',
     'charles.chat',
+    'charles.blog',
+    'charles.comments',
     'xadmin',
     'reversion',
 ]
@@ -159,16 +161,16 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/0",
-        'TIMEOUT': 1800,                                              # 缓存超时时间（默认300，None表示永不过期，0表示立即过期）
+        'TIMEOUT': 1800,  # 缓存超时时间（默认300，None表示永不过期，0表示立即过期）
         "OPTIONS": {
-            "MAX_ENTRIES": 300,                                       # 最大缓存个数（默认300）
-            "CULL_FREQUENCY": 3,                                      # 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",      # redis客户端
-            "CONNECTION_POOL_KWARGS": {"max_connections": 100},         # redis最大连接池配置
-            "PASSWORD": "",                                   # redis密码
+            "MAX_ENTRIES": 300,  # 最大缓存个数（默认300）
+            "CULL_FREQUENCY": 3,  # 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",  # redis客户端
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},  # redis最大连接池配置
+            "PASSWORD": "",  # redis密码
         },
-        'KEY_PREFIX': '',                                        # 缓存key的前缀（默认空）
-        'VERSION': 2,                                                 # 缓存key的版本（默认1）
+        'KEY_PREFIX': '',  # 缓存key的前缀（默认空）
+        'VERSION': 2,  # 缓存key的版本（默认1）
     },
 }
 TEMPLATES = [
@@ -183,7 +185,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'blog_tags': 'charles.blog.templatetags.blog_tags',
+            }
         },
+
     },
 ]
 

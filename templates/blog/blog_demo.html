@@ -1,0 +1,97 @@
+{% load staticfiles %}
+{% load blog_tags %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>诗 &amp; 远方</title>
+
+  <!-- meta -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- css -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'adminLTE/bower_components/Ionicons/css/ionicons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'blog/css/pace.css' %}">
+  <link rel="stylesheet" href="{% static 'blog/css/custom.css' %}">
+  <link rel="stylesheet" href="{% static 'blog/css/highlights/github.css' %}">
+  <!-- js -->
+  <script src="{% static 'js/jquery.min.js' %}"></script>
+  <script src="{% static 'chat/bootstrap.min.js' %}"></script>
+  <script src="{% static 'blog/js/pace.min.js' %}"></script>
+  <script src="{% static 'blog/js/modernizr.custom.js' %}"></script>
+</head>
+
+<body>
+<div class="container">
+  <header id="site-header">
+    <div class="row">
+      <div class="col-md-4 col-sm-5 col-xs-8">
+        <div class="logo">
+          <h1><a href="{% url 'blog:index' %}"><b>Black</b> &amp; White</a></h1>
+        </div>
+      </div><!-- col-md-4 -->
+      <div class="col-md-8 col-sm-7 col-xs-4">
+        <nav class="main-nav" role="navigation">
+          <div class="navbar-header">
+            <button type="button" id="trigger-overlay" class="navbar-toggle">
+              <span class="ion-navicon"></span>
+            </button>
+          </div>
+
+        </nav>
+        <div id="header-search-box">
+          <a id="search-menu" href="#"><span id="search-icon" class="ion-ios-search-strong"></span></a>
+          <div id="search-form" class="search-form">
+            <form role="search" method="get" id="searchform" action="#">
+              <input type="search" placeholder="搜索" required>
+              <button type="submit"><span class="ion-ios-search-strong"></span></button>
+            </form>
+          </div>
+        </div>
+      </div><!-- col-md-8 -->
+    </div>
+  </header>
+</div>
+<div class="content-body">
+  <div class="container">
+    <div class="row">
+      <main class="col-md-8">
+        {% block main %}
+        {% endblock main %}
+      </main>
+      <aside class="col-md-4">
+        {% block toc %}
+        {% endblock toc %}
+      </aside>
+      <aside class="col-md-4">
+        <div class="widget widget-recent-posts">
+          <h3 class="widget-title">最新文章</h3>
+          {% get_recent_posts as recent_post_list %}
+          <ul>
+            {% for post in recent_post_list %}
+              <li>
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+              </li>
+            {% empty %}
+              暂无文章
+            {% endfor %}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+<footer id="site-footer">
+
+</footer>
+
+<!-- Mobile Menu -->
+<div class="overlay overlay-hugeinc">
+  <button type="button" class="overlay-close"><span class="ion-ios-close-empty"></span></button>
+</div>
+
+<script src="{% static 'blog/js/script.js' %}"></script>
+
+</body>
+</html>
