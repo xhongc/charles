@@ -1,11 +1,11 @@
-from django.contrib import admin
+import xadmin
 from .models import Project
 
 
 # Register your models here.
 
-class PeopleAdmin(admin.ModelAdmin):
-    list_display = ["status", "offer_title"]
+class PeopleAdmin(object):
+    list_display = ["id", "offer_title", "relative_url", 'date_created', 'popular_ordering']
 
 
-admin.site.register(Project, PeopleAdmin)
+xadmin.site.register(Project, PeopleAdmin)

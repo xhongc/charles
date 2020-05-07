@@ -1,4 +1,4 @@
-/* Stage- Bootstrap one page Event ticket booking theme 
+/* Stage- Bootstrap one page Event ticket booking theme
 Created by pixpalette.com - online design magazine */
 
 $(window).load(function () {
@@ -8,18 +8,28 @@ $(window).load(function () {
 
 function redirectUrl(th) {
     var the = $(th);
-    window.location.href = the.attr('data-url')
+    $.ajax({
+        url: '/api/project/%s/'.format(the.attr('data-id')),
+        type: 'PATCH',
+        success: function () {
+        },
+        fail: function () {
+        }
+    });
+
+    window.location.href = the.attr('data-url');
 }
 
-$(".ticketBox").mouseenter(function () {
+$(document).on('mouseenter', ".ticketBox", function () {
     $(this).find(".topLine,.bottomLine").stop().animate({"width": "100%"});
     $(this).find(".rightLine,.leftLine").stop().animate({"height": "100%"});
-    $(this).css("cursor","Pointer");
+    $(this).css("cursor", "Pointer");
 
-}).mouseleave(function () {
+});
+$(document).on('mouseleave', '.ticketBox', (function () {
     $(this).find(".topLine,.bottomLine").stop().animate({"width": "0px"});
     $(this).find(".rightLine,.leftLine").stop().animate({"height": "0px"});
-});
+}));
 
 function showTime() {
     var myDate = new Date();
@@ -47,17 +57,16 @@ function showTime() {
     //用js方法
     // document.getElementById("time").innerHTML = time1+day+time2;
     //用jquery方法
-    if(parseInt(sec) %2 ===0){
+    if (parseInt(sec) % 2 === 0) {
         $('.ticketBox').each(function () {
-        $(this).find(".topLine,.bottomLine").stop().animate({"width": "100%"});
-        $(this).find(".rightLine,.leftLine").stop().animate({"height": "100%"});
-    });
-    }
-    else {
+            $(this).find(".topLine,.bottomLine").stop().animate({"width": "100%"});
+            $(this).find(".rightLine,.leftLine").stop().animate({"height": "100%"});
+        });
+    } else {
         $('.ticketBox').each(function () {
-        $(this).find(".topLine,.bottomLine").stop().animate({"width": "0%"});
-        $(this).find(".rightLine,.leftLine").stop().animate({"height": "0%"});
-    });
+            $(this).find(".topLine,.bottomLine").stop().animate({"width": "0%"});
+            $(this).find(".rightLine,.leftLine").stop().animate({"height": "0%"});
+        });
     }
 
 
