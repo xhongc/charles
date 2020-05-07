@@ -22,13 +22,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         room_channel_no = self.scope['url_route']['kwargs']['room_name']
         request_user = self.scope["user"]
+        # 游客拒绝
         if request_user.is_anonymous:
             # Reject the connection
             await self.close()
+        # 必须是我加入的频道
         elif room_channel_no in request_user.profile.get_my_chat_room():
             self.room_name = room_channel_no
             self.room_group_name = 'chat_%s' % self.room_name
-            # 加入成员保存字典
+            # 加入成员保存字典 redis缓存中
             self.chats = cache.get('chats')
             self.chats[self.room_group_name].add(request_user.profile.unicode_id)
             cache.set('chats', self.chats)
@@ -40,7 +42,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             )
 
             await self.accept()
-
+        # 机器人回复频道
         elif room_channel_no == 'robot':
             self.room_name = room_channel_no
             self.room_group_name = 'chat_%s' % self.room_name
@@ -50,13 +52,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 self.room_group_name,
                 self.channel_name
             )
-
             await self.accept()
         else:
             await self.close()
 
     async def disconnect(self, close_code):
-        # Leave room group
+        # Leave room group 缓存中清理
         self.chats = cache.get('chats')
         self.chats[self.room_group_name].remove(self.scope["user"].profile.unicode_id)
         cache.set('chats', self.chats)
@@ -71,7 +72,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
         msg_type = text_data_json['msg_type']
-        send_user_uid = text_data_json.get('send_user_uid','') or ''
+        send_user_uid = text_data_json.get('send_user_uid', '') or ''
         chat_user = self.scope.get('user')
         send_time = datetime.now()
         # 机器人 加思知回复

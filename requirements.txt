@@ -25,3 +25,5 @@ djangorestframework-jwt
 https://codeload.github.com/sshwsfc/xadmin/zip/django2
 django-crispy-forms
 django-reversion
+Markdown==2.6.9
+
