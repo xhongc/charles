@@ -15,6 +15,7 @@ from charles.chat.filters import ChatRoomFilter, ChatLogFilter
 from charles.chat.models import ChatRoom, ChatLog
 from charles.chat.serializers import FriendsSerializers, ListFriendsSerializers, PostChatLogSerializers, \
     ChatRoomSerializers, ListChatLogSerializers, ListChatRoomSerializers, UpdateChatRoomSerializers
+from project.tasks import add
 from utils.base_serializer import BasePagination
 
 
@@ -72,7 +73,7 @@ class ChatLogViewsets(mixins.ListModelMixin, GenericViewSet):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-
+        add.delay(1,2)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

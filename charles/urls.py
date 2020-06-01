@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 import xadmin
+from django.contrib import admin
 
 xadmin.autodiscover()
 # version模块自动注册需要版本控制的 Model
@@ -43,6 +44,7 @@ router.register(r'chat_room', viewset=ChatRoomViewsets, base_name='chat_room')
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url('^api/', include(router.urls)),
     url(r'^docs/', include_docs_urls(title='API & Dog', description='API文档', public=True)),
     url(r'^api-token-auth/', LoginObtainJSONWebToken.as_view()),

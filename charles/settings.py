@@ -254,25 +254,28 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static/'),
 )
 # celery 配置
+# python manage.py celery worker --loglevel=info --beat
 import djcelery
 
 djcelery.setup_loader()
-BROKER_URL = 'redis://127.0.0.1:6379/1'
-CELERY_IMPORTS = ('project.tasks')
-CELERY_TIMEZONE = 'Asia/Shanghai'
-CELERY_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+BROKER_URL = 'redis://localhost:6379/1'  # 代理人
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # 结果存储地址
+CELERY_ACCEPT_CONTENT = ['application/json']  # 指定任务接收的内容序列化类型
+CELERY_TASK_SERIALIZER = 'json'  # 任务序列化方式
+CELERY_RESULT_SERIALIZER = 'json'  # 任务结果序列化方式
+CELERY_TASK_RESULT_EXPIRES = 12 * 30  # 超过时间
+CELERY_MESSAGE_COMPRESSION = 'zlib'  # 是否压缩
+CELERYD_CONCURRENCY = 4  # 并发数默认已CPU数量定
+CELERYD_PREFETCH_MULTIPLIER = 4  # celery worker 每次去redis取任务的数量
+CELERYD_MAX_TASKS_PER_CHILD = 3  # 每个worker最多执行3个任务就摧毁，避免内存泄漏
+CELERYD_FORCE_EXECV = True  # 可以防止死锁
+# CELERY_ENABLE_UTC = False  # 关闭时区
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'  # 定时任务调度器
+
 from celery.schedules import crontab
 from celery.schedules import timedelta
 
-CELERYBEAT_SCHEDULE = {  # 定时器策略
-    # 定时任务一：　每隔30s运行一次
-    u'测试定时器1': {
-        "task": "project.tasks.add",
-        # "schedule": crontab(minute='*/2'),  # or 'schedule':   timedelta(seconds=3),
-        "schedule": timedelta(seconds=30),
-        "args": (),
-    },
-}
 
 CHANNEL_LAYERS = {
     'default': {
