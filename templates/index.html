@@ -44,7 +44,6 @@
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane fade in active" id="buyTicket">
                 <div class="row" id="id_row">
-
                 </div>
               </div>
               <div role="tabpanel" class="tab-pane fade" id="venue">
@@ -68,6 +67,9 @@
 
         </div>
       </div>
+
+      </div>
+
     </div>
   </div>
 
@@ -77,7 +79,6 @@
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <script src="static/js/bootstrap.min.js"></script>
   <script src="static/js/allscript.js"></script>
-
   <script>
       function getProjectList() {
           $.ajax({
@@ -132,6 +133,7 @@
 
       $(document).ready(function () {
           showTime();
+          $('.event-banner-wrapper').css('background','url(http://area.sinaapp.com/bingImg/)');
           getProjectList();
       })
   </script>

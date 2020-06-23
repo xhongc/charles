@@ -17,3 +17,11 @@ class ChatLogFilter(django_filters.FilterSet):
     class Meta:
         model = ChatLog
         fields = ['said_to_room__channel_no']
+
+
+class PersonalChatLogFilter(django_filters.FilterSet):
+    who_said__profile__unicode_id = django_filters.CharFilter()
+
+    class Meta:
+        model = ChatLog
+        fields = ['who_said__profile__unicode_id']

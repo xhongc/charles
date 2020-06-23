@@ -83,7 +83,9 @@
         }
     });
      var uid = "{{ user.profile.unicode_id }}";
-    notificationConnect(uid);
+     if (window.location.pathname !== '/bc/') {
+       notificationConnect(uid);
+     }
     function notificationConnect(uid) {
                 if (!window.localStorage.token) {
                     if (window.location.pathname === '/login/'){

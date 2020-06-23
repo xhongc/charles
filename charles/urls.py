@@ -29,7 +29,7 @@ from django.views.generic import TemplateView
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
-from charles.chat.views import FriendsViewsets, ChatLogViewsets, ChatRoomViewsets
+from charles.chat.views import FriendsViewsets, ChatLogViewsets, ChatRoomViewsets, PersonalChatLogViewsets
 from charles.shorturl.views import ShortUrlViewsets
 from project.views import ProjectViewset, HeroesViewset
 from utils.channelsmiddleware import LoginObtainJSONWebToken
@@ -40,6 +40,7 @@ router.register(r'heroes', viewset=HeroesViewset, base_name='heroes')
 router.register(r'shorturl', viewset=ShortUrlViewsets, base_name='shorturl')
 router.register(r'friends', viewset=FriendsViewsets, base_name='friends')
 router.register(r'chat_log', viewset=ChatLogViewsets, base_name='chat_log')
+router.register(r'personal_chat_log', viewset=PersonalChatLogViewsets, base_name='personal_chat_log')
 router.register(r'chat_room', viewset=ChatRoomViewsets, base_name='chat_room')
 
 urlpatterns = [
@@ -53,6 +54,8 @@ urlpatterns = [
     path('chat/', include('charles.chat.urls'), name='chat-url'),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('md/', TemplateView.as_view(template_name='markdown/md.html'), name='md'),
+    path('test/', TemplateView.as_view(template_name='test.html'), name='test'),
+    path('moyu/', TemplateView.as_view(template_name='moyu.html'), name='moyu'),
     path('jsonp/', TemplateView.as_view(template_name='jsonp/json_parse.html'), name='jsonp'),
     path('bc/', TemplateView.as_view(template_name='chat/boot_chat.html'), name='bc'),
     path('shorturl/', TemplateView.as_view(template_name='shorturl.html'), name='shorturl'),

@@ -53,8 +53,12 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
     'Pragma',
     'X-CustomAuthHeader',
+    'cache-control',
+    'content-encoding',
+    'p3p',
+    'vary',
+    'x-msedge-ref'
 )
-
 APPEND_SLASH = True
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -75,7 +79,6 @@ INSTALLED_APPS = [
     'charles.blog',
     'charles.comments',
     'xadmin',
-    'reversion',
 ]
 REST_FRAMEWORK = {
     # 'DEFAULT_FILTER_BACKENDS': (
@@ -198,22 +201,22 @@ ASGI_APPLICATION = 'charles.routing.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'charles_db',
-        'USER': 'root',
-        'PASSWORD': 'xhongcc',
-        'HOST': '',
-        'PORT': '',
-    },
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+   }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'charles_db',
+#         'USER': 'root',
+#         'PASSWORD': 'xhongc',
+#         'HOST': 'db',
+#         'PORT': '3306',
+#     },
+# }
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 APPEND_SLASH = False
@@ -249,7 +252,7 @@ USE_TZ = False
 
 
 STATIC_URL = '/static/'
-
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static/'),
 )
