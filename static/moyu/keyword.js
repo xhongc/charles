@@ -1,15 +1,10 @@
 ﻿$(document).ready(function(){
     /*--------------------搜索框样式控制js------------------------*/
-     var search_types={
-        "types":[{name:"https://www.baidu.com/s?wd=",stype:"/static/moyu/1_scbaidu.png",type:"baidu"},
-                 {name:"https://www.sogou.com/web?query=",stype:"/static/moyu/3_scsougou.png",type:"sogou"},
-                 {name:"https://cn.bing.com/search?q=",stype:"/static/moyu/4_scbing.png",type:"bing"},
-                 {name:"https://www.so.com/s?q=",stype:"/static/moyu/5_sc360.png",type:"so"},
-                 {name:"https://www.google.com/search?q=",stype:"/static/moyu/6_scgoogle.png",type:"google"},
-                 {name:"http://www.rufengso.net/s/name/",stype:"/static/moyu/7_sccili.png",type:"wangpan"},
-                 {name:"https://www.cupfox.com/search?key=",stype:"/static/moyu/8_scyingyin.png?v=1.1",type:"yingyin"},
-                 {name:"http://www.somelemon.com/index.php?r=l&kw=",stype:"/static/moyu/9_scyouhui.png",type:"youhui"}
-                ]};
+    var search_types ={
+        'baidu':{name:"https://www.baidu.com/s?wd=",stype:"/static/moyu/1_scbaidu.png",type:"baidu"},
+        'bing':{name:"https://cn.bing.com/search?q=",stype:"/static/moyu/4_scbing.png",type:"bing"},
+        'google':{name:"https://www.google.com/search?q=",stype:"/static/moyu/6_scgoogle.png",type:"google"}
+    }
 	var checktype=$(".sChoiceBtn");
     var type=$(".scSmallBox");
     var oMsoBtn1=document.getElementById('msoBtn1');
@@ -25,90 +20,56 @@
     var tbcolor="#126AC1";
 
 
-                var oSearchText=document.getElementById('search');
-                var searchCheck = document.getElementById("searchCheck");
-                        searchCheck.addEventListener("submit",function(event) {
-                            var wordCheck = document.getElementsByClassName("textb")[0];
+    var oSearchText = document.getElementById('search');
+    var searchCheck = document.getElementById("searchCheck");
+    searchCheck.addEventListener("submit", function (event) {
+        var wordCheck = document.getElementsByClassName("textb")[0];
 
-                            if (wordCheck.value.length > 0) {
-                                    window.open(textb[0].name+oSearchText.value.replace(/%/g, "%25").replace(/#/g, "%23").replace(/\+/g, "%2B").replace(/\&/g, "%26"));
-                            }
+        if (wordCheck.value.length > 0) {
+            window.open(textb[0].name + oSearchText.value.replace(/%/g, "%25").replace(/#/g, "%23").replace(/\+/g, "%2B").replace(/\&/g, "%26"));
+        }
 
-                                event.preventDefault()
-                                return false;
+        event.preventDefault()
+        return false;
 
 
-                        });
+    });
 
 
 	var selType=get_cookie("sel"),obj=null;
-	search_types.types.forEach(function(e){
-		if(e.type==selType){
-			obj = e;
+	$.each(search_types,function (k,v) {
+        if(k===selType){
+			obj = v;
 		}
-	})
+    })
 	if(obj!=null){
 		//form.attr("action",obj.action);改变表单提交位置
 		textb.attr("name",obj.name);//改变表单变量名
 		checktype.attr("src",obj.stype);//checktype.css({"background":"url("+obj.stype+")"});
 	}
     textb.focus();//文档加载完毕 搜索框获取焦点
-    //alert(search_types.types[1].value);
     //选择搜索类型按钮被点击
     checktype.click(function(){
         seach_type.css({"display":"block",height:0});
         seach_type.animate({
             height:(type.height())*type.length,
         },300);
-                // if (oMsoBigBox.style.display=="block")
-                // {
-                //     oMsoBtn1Img.src="images/searchChoice/msoBtn100.png";
-                // }
-                // else
-                // {
-                //     oMsoBtn1Img.src="images/searchChoice/msoBtn101.png";
-                // }
-
     });
 
-
-    // oMsoBtn1.onclick=function(){
-    //             window.localStorage.setItem('msoLock','notLock');
-    //             oMsoLock.src="images/msoNotLocked.png";
-    //             oMsoBigBoxLine1.style.display="none";
-    //             if (oMsoBigBox.style.display=="block")
-    //             {
-    //                 $("#msoBigBox").fadeOut(300);
-    //             }
-    //             else
-    //             {
-    //                 $("#msoBigBox").fadeIn(300);
-    //             }
-
-    //     seach_type.animate({
-    //         height:0,
-    //     },500,function(){
-    //         seach_type.css({"display":"none",height:0});
-    //     });
-    // }
     type.click(function(){
-        //alert(search_types.types[$(this).index()].value)
-		var type = search_types.types[$(this).index()].type,exp=null;
+        var search_index = $(this).attr('id')
+		var type = search_types[search_index].type,exp=null;
 		exp = new Date();
 		exp.setTime(exp.getTime() + 2592000* 1000);//过期时间1分钟
 		document.cookie="sel="+type+";path=/;expires="+exp.toGMTString();
-        //form.attr("action",search_types.types[$(this).index()].action);改变表单提交位置
-        textb.attr("name",search_types.types[$(this).index()].name);//改变表单变量名
-        checktype.attr("src",search_types.types[$(this).index()].stype);//checktype.css({"background":"url("+search_types.types[$(this).index()].stype+")"});
-        /*subb.val(search_types.types[$(this).index()].value);//改变按钮显示
-        subb.css({background:search_types.types[$(this).index()].subcolor});//改变按钮颜色
-        tbcolor=search_types.types[$(this).index()].subcolor;//改变输入框边框颜色
+        textb.attr("name",search_types[search_index].name);//改变表单变量名
+        checktype.attr("src",search_types[search_index].stype);//checktype.css({"background":"url("+search_types.types[$(this).index()].stype+")"});
 
-        subb.css({"box-shadow":"0 1px 2px "+search_types.types[$(this).index()].subcolor});
+        subb.css({"box-shadow":"0 1px 2px "+search_types[search_index].subcolor});
         textb.focus();//编辑框获取焦点*/
         seach_type.animate({
             height:0,
-        },500,function(){
+        },100,function(){
             seach_type.css({"display":"none",height:0});
         });
     });
@@ -269,7 +230,7 @@ function keydata(keys){
                 for(var i=0;i<len;i++){
                     if(numspan==i){
                         keywordbox.children().eq(i).css({
-                            "background-color":"#f1f1f1"
+                            "background-color":"rgba(149,191,226)"
                         });
                     }else{
                         keywordbox.children().eq(i).css({
@@ -289,7 +250,7 @@ function keydata(keys){
                 for(var i=0;i<len;i++){
                     if(numspan==i){
                         keywordbox.children().eq(i).css({
-                            "background-color":"#f1f1f1"
+                            "background-color":"rgba(149,191,226)"
                         });
                     }else{
                         keywordbox.children().eq(i).css({

@@ -4,7 +4,7 @@ body, h1, h2, h3, h4, h5, h6 {
 }
 .dingbu{
 	position:relative;
-	background-image:radial-gradient( circle at 0% 20%,#93e2ff,#0396FF,#b3e0fa );
+	background-image:url("b1.jpg");
 	background-repeat:no-repeat;
 	background-size:cover;
 	text-align:center;
@@ -64,6 +64,15 @@ body, h1, h2, h3, h4, h5, h6 {
 	top:180px;
 	right:2%;
 	width:64px;
+	text-align:center;
+	padding:0px;
+	font-size:14px;
+	z-index:999;
+}
+.right-side-2{
+	position:fixed;
+	top:300px;
+	width:222px;
 	text-align:center;
 	padding:0px;
 	font-size:14px;
@@ -266,7 +275,7 @@ h1{
 	float: left
 }
 #search_bg #button_bg .keyword {
-	width: 917px;
+	width: 418px;
 	height: auto;
 	border: solid 1px #cccccc;
 	border-top: none;
