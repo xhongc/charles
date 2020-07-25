@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 from project.filters import ProjectFilter
 from project.serializers import ProjectSerializers, HeroesSerializers
@@ -35,7 +35,7 @@ class ProjectPagination(PageNumberPagination):
     max_page_size = 100
 
 
-class ProjectViewset(ModelViewSet):
+class ProjectViewset(mixins.ListModelMixin, mixins.UpdateModelMixin, GenericViewSet):
     """
     list:
         项目详情
@@ -45,7 +45,7 @@ class ProjectViewset(ModelViewSet):
         删除项目
     """
     # 查询集
-    queryset = Project.objects.all()
+    queryset = Project.objects.order_by('-popular_ordering')
     # 序列化
     serializer_class = ProjectSerializers
     # 分页
@@ -56,16 +56,7 @@ class ProjectViewset(ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProjectFilter
 
-    def update(self, request, *args, **kwargs):
-        print('ok')
-        res = add.delay(4, 4)
-        print(res)
-        return Response({'code': '1234'})
-
 
 class HeroesViewset(ModelViewSet):
     queryset = Heroes.objects.all()
     serializer_class = HeroesSerializers
-
-
-

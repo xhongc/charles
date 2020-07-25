@@ -1,0 +1,70 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<title>Json Parser Online</title>
+		<meta name="keywords" content="JSON,javascript object notation,parser,parseur,online,tool,free,javascript,tree,treeview,tree view,post,syntax highlighting,парсер,解析器,محلل جسون">
+		<meta name="description" content="Analyze your JSON string as you type with an online Javascript parser, featuring tree view and syntax highlighting. Processing is done locally: no data send to server.">
+		<meta name="author" content="Olivier Cuenot">
+		<link rel="icon" type="image/png" href="#" id="favicon">
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+		<link rel="stylesheet" href="{% static 'jsonp/parse_new.css' %}">
+		<script src="{% static 'jsonp/parse_new.js' %}"></script>
+		<script src="{% static 'jsonp/inone.js' %}"></script>
+	</head>
+
+	<body class="json-empty">
+		<div id="header" class="a"><b style="margin-right: 30px;">JSON在线解析(<font color="red">双击自动格式化</font>)</b>
+			<div class="c">
+				<div class="n b"><span class="l">选项</span><span class="m">▼</span>
+					<div class="j g h">
+						<div class="e d on" id="yM">左右模式</div>
+						<div class="e d" id="xL">上下模式</div>
+						<div class="f"></div>
+						<div class="e on" id="gV">解析JSON</div>
+						<div class="e on" id="jY">执行JSON</div>
+						<div class="f"></div>
+						<div class="e" id="zN">压缩</div>
+						<div class="e on" id="cR">着色</div>
+						<div class="e" id="bQ">显示JS类型</div>
+						<div class="e on" id="aP">显示数组索引</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="split" class="N I" style="height: 1165px; top: 42px;"><textarea class="J x P" id="eT" spellcheck="false" style="height: 1153px; width: 696px;"></textarea>
+			<div class="M ui-draggable" style="left: 728px;"></div>
+			<div class="K F color aP" id="fU" style="width: 1124px;">
+				<div class="y Q">
+					<div class="C A" id="hW" style="width: 562px;">准备就绪</div>
+					<div class="C B" id="kZ">&nbsp;</div>
+				</div>
+				<div class="z L" style="height: 1125px;">
+					<div class="E" id="dS">
+						<div class="C A" style="width: 562px; float: left;">
+							<div class="w">
+								<div class="P" id="iX"></div>
+							</div>
+						</div>
+						<div class="C B" style="width: 561px;">
+							<div class="w D">
+								<div class="P" id="lA"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$("#eT").dblclick(function(e){
+				/*keycode = parseInt(e.keyCode);
+				if(keycode==8 || keycode==13 || keycode == 32){
+					return;
+				}*/
+				jsonVal=jsl.format.formatJson($('#eT').val());
+				$('#eT').val(jsonVal);
+			})
+		</script>
+
+
+</body></html>

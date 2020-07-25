@@ -56,4 +56,5 @@ class ChatLog(models.Model):
                                 related_name='said_to')
     said_to_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, db_constraint=False, null=True, blank=True,
                                      related_name='said_to_room')
+    said_together = models.CharField(max_length=64, null=True, blank=True)
     status = models.CharField(max_length=16, default='read')

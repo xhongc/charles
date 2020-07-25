@@ -30,7 +30,24 @@ class FriendsSerializers(serializers.Serializer):
             raise Exception('error')
 
 
+class FriendsSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
+
+
 class ListFriendsSerializers(serializers.ModelSerializer):
+    unread_no = serializers.SerializerMethodField()
+
+    def get_unread_no(self, obj):
+        request = self._context.get('request')
+        said_together = '&'.join(sorted([str(obj.unicode_id), str(request.user.profile.unicode_id)]))
+
+        unread_no = ChatLog.objects.filter(status='unread', said_to=request.user, said_together=said_together).count()
+        if not unread_no:
+            unread_no = ''
+        return unread_no
+
     class Meta:
         model = UserProfile
         fields = '__all__'
@@ -70,8 +87,8 @@ class ChatRoomSerializers(serializers.ModelSerializer):
 
 
 class ListChatRoomSerializers(serializers.ModelSerializer):
-    admins = ListFriendsSerializers(many=True)
-    members = ListFriendsSerializers(many=True)
+    admins = FriendsSerializers(many=True)
+    members = FriendsSerializers(many=True)
     unread_no = serializers.SerializerMethodField()
 
     def get_unread_no(self, obj):

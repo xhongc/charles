@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
-from charles.chat.filters import ChatRoomFilter, ChatLogFilter
+from charles.chat.filters import ChatRoomFilter, ChatLogFilter, PersonalChatLogFilter
 from charles.chat.models import ChatRoom, ChatLog
 from charles.chat.serializers import FriendsSerializers, ListFriendsSerializers, PostChatLogSerializers, \
     ChatRoomSerializers, ListChatLogSerializers, ListChatRoomSerializers, UpdateChatRoomSerializers
@@ -41,7 +41,7 @@ class FriendsViewsets(mixins.CreateModelMixin, mixins.ListModelMixin, GenericVie
         if channel_no:
             return self.request.user.profile.friends.exclude(chat_member__channel_no=channel_no).exclude(
                 chat_admins__channel_no=channel_no)
-        return self.request.user.profile.friends.all('')
+        return self.request.user.profile.friends.all()
 
     def get_serializer_class(self):
         if self.action == 'create':
@@ -68,17 +68,50 @@ class ChatLogViewsets(mixins.ListModelMixin, GenericViewSet):
         start = datetime.now().date()
         end = start + timedelta(days=1)
         return ChatLog.objects.filter(chat_datetime__range=(start, end), said_to=self.request.user).order_by(
-            '-chat_datetime')
+            '-chat_datetime', '-id')
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             # 把未读变成已读
-            queryset.filter(status='unread', said_to=request.user,
-                            said_to_room__channel_no=request.query_params.get('said_to_room__channel_no')).update(
+            ChatLog.objects.filter(status='unread', said_to=request.user,
+                                   said_to_room__channel_no=request.query_params.get(
+                                       'said_to_room__channel_no')).update(
+                status='read')
+            return self.get_paginated_response(serializer.data[::-1])
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class PersonalChatLogViewsets(mixins.ListModelMixin, GenericViewSet):
+    authentication_classes = (JSONWebTokenAuthentication, SessionAuthentication)
+    pagination_class = BasePagination
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = PersonalChatLogFilter
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.action == 'list':
+            return ListChatLogSerializers
+        return ListChatLogSerializers
+
+    def get_queryset(self):
+        start = datetime.now().date()
+        end = start + timedelta(days=1)
+        return ChatLog.objects.filter(chat_datetime__range=(start, end)).order_by(
+            '-chat_datetime', '-id')
+
+    def list(self, request, *args, **kwargs):
+        send_to_user_uid = request.query_params.get('who_said__profile__unicode_id')
+        said_together = '&'.join(sorted([str(request.user.profile.unicode_id), send_to_user_uid]))
+        queryset = self.get_queryset().filter(said_together=said_together)
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            # 把未读变成已读
+            ChatLog.objects.filter(status='unread', said_to=request.user, said_together=said_together).update(
                 status='read')
             return self.get_paginated_response(serializer.data[::-1])
 

@@ -2,3 +2,4 @@
 charles.iml
 *.xml
 .DS_Store
+db/

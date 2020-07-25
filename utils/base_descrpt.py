@@ -14,10 +14,15 @@ def base64decode(value):
     return base64.b64encode(value.encode('utf8')).decode('utf8')
 
 
+class Test(object):
+    def __new__(cls, *args, **kwargs):
+        print('__new__')
+        return super(Test, cls).__new__(cls, *args, **kwargs)
+
+    def __init__(self):
+        print('__iniT__')
+
+
+
 if __name__ == '__main__':
-    print(_md5('112'))
-    print(base64decode('abcd'),type(base64decode('abcd')))
-
-
-
-
+    Test()

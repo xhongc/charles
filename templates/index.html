@@ -1,290 +1,141 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <div class="loader">
-        <div>
-            <img src="static/images/icons/preloader.gif"/>
-        </div>
+  <div class="loader">
+    <div>
+      <img src="static/images/icons/preloader.gif"/>
     </div>
+  </div>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-5 left-wrapper">
-                <div class="event-banner-wrapper">
-                    <div class="logo">
-                        <h1>Stage</h1>
-                    </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-5 left-wrapper">
+        <div class="event-banner-wrapper">
+          <div class="logo">
+            <h1>Stage</h1>
+          </div>
 
-                    <h2>
-                        Music<br>Concert Live
-                        <span id="time"></span>
-                    </h2>
-                </div>
-            </div>
-            <div class="col-sm-7 right-wrapper">
-                <div class="event-ticket-wrapper">
-
-                    <div class="event-tab">
-
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#buyTicket" aria-controls="buyTicket"
-                                                                      role="tab"
-                                                                      data-toggle="tab">My Servers</a></li>
-                            <li role="presentation"><a href="#venue" aria-controls="venue" role="tab" data-toggle="tab">Blog</a>
-                            </li>
-
-
-                            <li role="presentation"><a href="#termCondition" aria-controls="termCondition" role="tab"
-                                                       data-toggle="tab">Terms
-                                & Conditions</a></li>
-                        </ul>
-
-                        <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane fade in active" id="buyTicket">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="ticketBox" data-url="shorturl/"
-                                             onclick="redirectUrl(this)">
-                                            <div class="topLine"></div>
-                                            <div class="rightLine"></div>
-                                            <div class="bottomLine"></div>
-                                            <div class="leftLine"></div>
-                                            <div class="inactiveStatus"></div>
-
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-name">
-                                                        ShortUrl
-                                                        <span><br>
-                            a short url server</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-price-count-box">
-                                                        <div class="ticket-control">
-                                                            <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                                                <img src="static/images/project/url.png">
-                                                                <span class="input-group-btn">
-                              </span>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ticket-description">
-                                                <p><strong>Please read the introduction:</strong><br>The short URL
-                                                    service can turn a long URL
-                                                    into a short URL,
-                                                    which is convenient for spreading on social networks.
-                                                </p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="ticketBox" data-url="generateid/"
-                                             onclick="redirectUrl(this)">
-                                            <div class="topLine"></div>
-                                            <div class="rightLine"></div>
-                                            <div class="bottomLine"></div>
-                                            <div class="leftLine"></div>
-                                            <div class="inactiveStatus"></div>
-
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-name">
-                                                        GenerateID.
-                                                        <span>a generate id number server</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-price-count-box">
-                                                        <div class="ticket-control">
-                                                            <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                                                <img src="static/images/project/id_card.png">
-                                                                <span class="input-group-btn">
-                              </span>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ticket-description">
-                                                <p><strong>Please read the introduction:</strong><br>Daquan ID and name
-                                                    are randomly combined by
-                                                    the program<br>&nbsp;
-                                                </p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="ticketBox" data-url="chat/"
-                                             onclick="redirectUrl(this)">
-                                            <div class="topLine"></div>
-                                            <div class="rightLine"></div>
-                                            <div class="bottomLine"></div>
-                                            <div class="leftLine"></div>
-                                            <div class="inactiveStatus"></div>
-
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-name">
-                                                        Chat
-                                                        <span>a common chat room</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-price-count-box">
-                                                        <div class="ticket-control">
-                                                            <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                                                <img src="static/images/project/chat.png">
-                                                                <span class="input-group-btn">
-                              </span>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ticket-description">
-                                                <p><strong>Please read the introduction:</strong><br>Chat every day and
-                                                    be happy every day<br>&nbsp;
-                                                </p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="ticketBox" data-url="docs/"
-                                             onclick="redirectUrl(this)">
-                                            <div class="topLine"></div>
-                                            <div class="rightLine"></div>
-                                            <div class="bottomLine"></div>
-                                            <div class="leftLine"></div>
-                                            <div class="inactiveStatus"></div>
-
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-name">
-                                                        Api Docs.
-                                                        <span>a api documents</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-price-count-box">
-                                                        <div class="ticket-control">
-                                                            <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                                                <img src="static/images/project/id_card.png">
-                                                                <span class="input-group-btn">
-                              </span>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ticket-description">
-                                                <p><strong>Please read the introduction:</strong><br>Daquan ID and name
-                                                    are randomly combined by
-                                                    the program<br>&nbsp;
-                                                </p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="ticketBox" data-url="xadmin/"
-                                             onclick="redirectUrl(this)">
-                                            <div class="topLine"></div>
-                                            <div class="rightLine"></div>
-                                            <div class="bottomLine"></div>
-                                            <div class="leftLine"></div>
-                                            <div class="inactiveStatus"></div>
-
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-name">
-                                                        Admin docs.
-                                                        <span>a admin backend</span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <div class="ticket-price-count-box">
-                                                        <div class="ticket-control">
-                                                            <div class="input-group">
-                              <span class="input-group-btn">
-                              </span>
-                                                                <img src="static/images/project/id_card.png">
-                                                                <span class="input-group-btn">
-                              </span>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="ticket-description">
-                                                <p><strong>Please read the introduction:</strong><br>Daquan ID and name
-                                                    are randomly combined by
-                                                    the program<br>&nbsp;
-                                                </p>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane fade" id="venue">
-                                <h4> Lorem ipsum dolor sit amet,<br> consectetur adipiscing elit,<br> sed do eiusmod<br>
-                                    Pune 411058
-                                </h4>
-                                <br>
-
-                            </div>
-                            <div role="tabpanel" class="tab-pane fade" id="termCondition">
-                                <p></p>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="cart">
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <p>Someone Like You</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+          <h2>
+            Music<br>Concert Live
+            <span id="time"></span>
+          </h2>
         </div>
+      </div>
+      <div class="col-sm-7 right-wrapper">
+        <div class="event-ticket-wrapper">
+
+          <div class="event-tab">
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#buyTicket" aria-controls="buyTicket"
+                                                        role="tab"
+                                                        data-toggle="tab">My Servers</a></li>
+              <li role="presentation"><a href="#venue" aria-controls="venue" role="tab" data-toggle="tab">Blog</a>
+              </li>
+
+
+              <li role="presentation"><a href="#termCondition" aria-controls="termCondition" role="tab"
+                                         data-toggle="tab">Terms
+                & Conditions</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane fade in active" id="buyTicket">
+                <div class="row" id="id_row">
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="venue">
+                {% include 'blog/blog_demo.html' %}
+
+              </div>
+              <div role="tabpanel" class="tab-pane fade" id="termCondition">
+                <p></p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="cart">
+            <div class="row">
+              <div class="col-xs-6">
+                <p>Someone Like You</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      </div>
+
     </div>
+  </div>
 
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="static/js/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="static/js/bootstrap.min.js"></script>
-    <script src="static/js/allscript.js"></script>
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="static/js/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="static/js/bootstrap.min.js"></script>
+  <script src="static/js/allscript.js"></script>
+  <script>
+      function getProjectList() {
+          $.ajax({
+              url: '/api/project/',
+              type: 'get',
+              success: function (data) {
+                  var html = '                  <div class="col-md-6">\n' +
+                      '                    <div class="ticketBox" data-url="%s" data-id="%s"\n' +
+                      '                         onclick="redirectUrl(this)">\n' +
+                      '                      <div class="topLine"></div>\n' +
+                      '                      <div class="rightLine"></div>\n' +
+                      '                      <div class="bottomLine"></div>\n' +
+                      '                      <div class="leftLine"></div>\n' +
+                      '                      <div class="inactiveStatus"></div>\n' +
+                      '\n' +
+                      '                      <div class="row">\n' +
+                      '                        <div class="col-xs-6">\n' +
+                      '                          <div class="ticket-name">\n' +
+                      '                            %s\n' +
+                      '                            <span>%s</span>\n' +
+                      '                          </div>\n' +
+                      '                        </div>\n' +
+                      '                        <div class="col-xs-6">\n' +
+                      '                          <div class="ticket-price-count-box">\n' +
+                      '                            <div class="ticket-control">\n' +
+                      '                              <div class="input-group">\n' +
+                      '                              <span class="input-group-btn">\n' +
+                      '                              </span>\n' +
+                      '                                <img src="%s">\n' +
+                      '                                <span class="input-group-btn">\n' +
+                      '                              </span>\n' +
+                      '                              </div>\n' +
+                      '                            </div>\n' +
+                      '\n' +
+                      '                          </div>\n' +
+                      '                        </div>\n' +
+                      '                      </div>\n' +
+                      '                      <div class="ticket-description">\n' +
+                      '                        <p><strong>Please read the introduction:</strong><br>%s' +
+                      '                        </p>\n' +
+                      '                      </div>\n' +
+                      '\n' +
+                      '                    </div>\n' +
+                      '                  </div>\n';
+                  $.each(data.results, function (i, item) {
+                      $('#id_row').append(html.format(item.relative_url, item.id, item.offer_title, item.sub_title, item.logo_img, item.introduction))
+                  })
+              }
 
-    <script>
-        $(document).ready(function () {
-            showTime();
-        })
-    </script>
+          })
+      }
+
+      $(document).ready(function () {
+          showTime();
+          $('.event-banner-wrapper').css('background','url(http://area.sinaapp.com/bingImg/)');
+          getProjectList();
+      })
+  </script>
 
 {% endblock %}

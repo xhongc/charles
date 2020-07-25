@@ -531,7 +531,7 @@
                     </li>
                     <li>
                         <a data-navigation-target="friends" href="#"
-                           class="notifiy_badge">
+                           class="">
                             <i class="ti-user"></i>
                         </a>
                     </li>
@@ -628,36 +628,8 @@
                         <input type="text" class="form-control" placeholder="Search chat">
                     </form>
                     <div class="sidebar-body" style="overflow: hidden; outline: none;" tabindex="4">
-                        <ul class="list-group list-group-flush">
-                            {% for friend in friends %}
-                                <li class="list-group-item" channel_no="{{ friend.unicode_id }}">
-                                    <div>
-                                        <figure class="avatar">
-                                            <img src="#" class="rounded-circle">
-                                        </figure>
-                                    </div>
-                                    <div class="users-list-body">
-                                        <h5>{{ friend.nick_name }}</h5>
-                                        <p>{{ friend.signature }}</p>
-                                        <div class="users-list-action action-toggle">
-                                            <div class="dropdown">
-                                                <a data-toggle="dropdown" href="#">
-                                                    <i class="ti-more"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a href="#" class="dropdown-item">Open</a>
-                                                    <a href="#"
-                                                       data-navigation-target="contact-information"
-                                                       class="dropdown-item">Profile</a>
-                                                    <a href="#" class="dropdown-item">Add to
-                                                        archive</a>
-                                                    <a href="#" class="dropdown-item">Delete</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            {% endfor %}
+                        <ul class="list-group list-group-flush" id="id_friends_list">
+
                         </ul>
                     </div>
                 </div>
@@ -756,7 +728,7 @@
 
             </div>
 
-            {#聊天框#}
+            {#群组聊天框#}
             <div class="chat chat-bg chatbox" style="display: none">
                 <div class="chat-header">
                     <div class="chat-header-user" data-navigation-target="contact-information" style="cursor: pointer">
@@ -836,7 +808,75 @@
                     </form>
                 </div>
             </div>
-            {#聊天框end#}
+            {#群组聊天框end#}
+
+            {#个人聊天框#}
+            <div class="chat chat-bg personal-chatbox" style="display: none">
+                <div class="chat-header">
+                    <div class="chat-header-user" data-navigation-target="contact-information" style="cursor: pointer">
+                        <figure class="avatar avatar-lg">
+                            <img src="#" class="rounded-circle id_room_img">
+                        </figure>
+                        <div>
+                            <h5 class="id_room_name">@</h5>
+                            <small class="text-muted">
+                                <i class="id_room_description">*</i>
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="chat-header-action">
+                        <ul class="list-inline">
+                            {#              电话按钮#}
+                            <li class="list-inline-item">
+                                <a href="#" class="btn btn-success">
+                                    <i class="fa fa-phone" aria-hidden="true"></i>
+                                </a>
+                            </li>
+
+                            {#              视频按钮#}
+                            <li class="list-inline-item">
+                                <a href="#" class="btn btn-secondary">
+                                    <i class="fa fa-video-camera" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                            {#新更多#}
+                            <li class="list-inline-item">
+                                <a href="#"
+                                   data-navigation-target="room—member-info" class="btn btn-secondary"
+                                   id="id_group_info">
+                                    <i class="ti-more"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="chat-body" tabindex="2" style="overflow: hidden; outline: none;">
+
+                    <div class="messages">
+                    </div>
+                </div>
+                <div class="chat-footer">
+                    <form action="">
+                        <input type="text" class="form-control" placeholder="chàng suǒ yù yán"
+                               aria-label="Recipient&#39;s username" aria-describedby="button-addon2"
+                               id="personal-chat-message-input">
+                        <div class="form-buttons">
+                            <button class="btn btn-light btn-floating" type="button">
+                                <i class="fa fa-paperclip"></i>
+                            </button>
+                            <button class="btn btn-light btn-floating" type="button">
+                                <i class="fa fa-microphone"></i>
+                            </button>
+                            <button class="btn btn-primary btn-floating" type="submit" id="personal-chat-message-submit">
+                                <i class="fa fa-send"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {#个人聊天框end#}
+
             {#资料抽屉#}
             <div class="sidebar-group">
                 <div id="contact-information" class="sidebar">
@@ -1051,25 +1091,11 @@
 {% endblock %}
 {% block script %}
     <script src="{% static 'chat/soho.min.js' %}"></script>
-    {#  <script src="{% static 'chat/examples.js' %}"></script>#}
     <script src="{% static 'chat/jquery.nicescroll.min.js' %}"></script>
     <script src="{% static 'chat/popper.min.js' %}"></script>
     <script src="{% static 'chat/bootstrap.min.js' %}"></script>
+    <script src="{% static 'chat/chat_api.js' %}"></script>
     <script>
-        function postFriend() {
-            let uid = $('#id_friend_uid').val();
-            $.ajax({
-                url: '/api/friends/',
-                type: 'post',
-                data: {'uid': uid},
-                success: function () {
-                    xtip.msg('添加成功')
-                },
-                error: function (data) {
-                    xtip.msg(data.responseText)
-                }
-            })
-        }
 
         var chatSocket = null;
         var ntfSocket = null;
@@ -1079,8 +1105,17 @@
             $(this).addClass('open-chat');
             $(this).addClass('disabled');
             $(this).find('#id_badge_ntf').html('');
+            $('.chatbox').hide();
+            $('.personal-chatbox').hide();
+
             var channel_no = $(this).attr('channel_no');
-            chatSocket = joinRoom(channel_no);
+
+            if (channel_no.startsWith('GP_')){
+               chatSocket = joinRoom(channel_no);
+            }
+            else{
+                joinSingle(channel_no);
+            }
         });
 
         function notificationConnect(uid) {
@@ -1101,7 +1136,8 @@
             ntfSocket.onmessage = function (e) {
                 var data = JSON.parse(e.data);
                 var channel_no = data['channel_no'];
-                var that = $('li[id=%s]'.format(channel_no)).find('#id_badge_ntf');
+                console.log('aaa',channel_no)
+                var that = $('li[channel_no=%s]'.format(channel_no)).find('#id_badge_ntf');
                 var count = parseInt(that.html()) || 0;
                 count += 1;
                 that.html(count)
@@ -1115,7 +1151,7 @@
                 console.log('Socket is onerror.', e.reason);
                 ntfSocket.close()
             };
-            return true
+            return ntfSocket
         }
 
         function wsConnect(channel_no) {
@@ -1205,6 +1241,13 @@
                 }
             }
         }
+        function joinSingle(channel_no) {
+            console.log('joinSingle');
+            ChatosExamle.Message.delete();
+            getPersonalChatLog(channel_no);
+            $('.personal-chatbox').show();
+
+        }
 
         var ChatosExamle = {
             Message: {
@@ -1242,24 +1285,6 @@
             }
         };
 
-        function getChatLog(channel_no) {
-            $.get('/api/chat_log/', {'said_to_room__channel_no': channel_no}).success(function (data) {
-                data = data.results;
-                var me = window.localStorage.user_id;
-                if (data.length !== 0) {
-                    console.log('data');
-                    $.each(data, function (i, item) {
-                        if (item.who_said === parseInt(me)) {
-                            ChatosExamle.Message.add(item.content, 'inside-message', item.chat_datetime);
-                        } else {
-                            ChatosExamle.Message.add(item.content, 'outgoing-message', item.chat_datetime);
-                        }
-                    });
-                    ChatosExamle.Info.add('---历史记录---', '', '');
-                }
-            })
-        }
-
         function addFriends() {
             xtip.open({
                 type: 'noready',
@@ -1280,40 +1305,6 @@
             });
         }
 
-        function getChatRoomInfo(channel_no) {
-            $.get('/api/chat_room/', {'channel_no': channel_no}).success(function (data) {
-                $('.id_room_name').html(data[0].room_name);
-                $('.id_room_description').html(data[0].room_description);
-                $('.id_room_img').attr('src', data[0].img_path);
-                $('.id_channel_no').html(channel_no);
-                var max_number = data[0].max_number;
-                var members_list = data[0]['members'];
-                var admin_list = data[0]['admins'];
-                $('#id_group').attr('channel_no', channel_no);
-                $('#id_member_count').html('群成员(%s/%s)'.format(members_list.length, max_number));
-                $('#id_admin_name').html(admin_list[0].nick_name);
-                $('#id_admin_signature').html(admin_list[0].signature);
-                $('#id_admin_img_path').attr('src', admin_list[0].img_path);
-                $('#id_member_list').empty();
-                if (members_list) {
-                    $.each(members_list, function (k, v) {
-                        $('#id_member_list').append('<li class=\"list-group-item\">\n' +
-                            '                <div>\n' +
-                            '                  <figure class=\"avatar\">\n' +
-                            '                    <img src=\"' + members_list[k].img_path + '\"' + 'class=\"rounded-circle\">\n' +
-                            '                  </figure>\n' +
-                            '                </div>\n' +
-                            '                <div class=\"users-list-body\">\n' +
-                            '                  <h5>' + members_list[k].nick_name + '</h5>\n' +
-                            '                  <p>' + members_list[k].signature + '</p>\n' +
-                            '                </div>\n' +
-                            '              </li>')
-                    });
-                }
-
-            })
-        }
-
         $('#chat-message-submit').click(function (e) {
             e.preventDefault();
             var messageInputDom = $('#chat-message-input');
@@ -1324,7 +1315,7 @@
                 chatSocket.send(JSON.stringify({
                     'message': message,
                     'msg_type': 'chat_message',
-                    'send_user_uid': "{{ user.profile.nick_name }}"
+                    'send_user_nick_name': "{{ user.profile.nick_name }}"
                 }));
                 messageInputDom.val('');
             } else {
@@ -1332,6 +1323,27 @@
             }
 
         });
+        $('#personal-chat-message-submit').click(function (e) {
+            e.preventDefault();
+            var messageInputDom = $('#personal-chat-message-input');
+            var message = messageInputDom.val();
+            var channel_no =$('.open-chat').attr('channel_no');
+            if (ntfSocket != null && ntfSocket.readyState === 1) {
+                {#自己发的在回车就显示#}
+                ChatosExamle.Message.add(message, 'inside-message', '');
+                ntfSocket.send(JSON.stringify({
+                    'message': message,
+                    'msg_type': 'chat_message',
+                    'send_user_nick_name': "{{ user.profile.nick_name }}",
+                    'send_to_user_uid': channel_no,
+                }));
+                messageInputDom.val('');
+            } else {
+                xtip.load('websocket 正在连接中', {'times': 1})
+            }
+
+        });
+
         $('#id_create_group').click(function () {
             var room_name = $('#group_name').val();
             var room_description = $('#description').val();
@@ -1377,34 +1389,20 @@
             });
 
         });
+        var target_map = {
+            'friends':getFriends,
+            'chats':getChatRoome,
+        };
+        $(document).on("click","[data-navigation-target]",function(){
+            var target = $(this).attr('data-navigation-target');
+            target_map[target]()
+        });
 
-        function getChatRoome() {
-            $.get('/api/chat_room/').success(function (data) {
-                $.each(data, function (k, v) {
-                    html = '<li class="list-group-item" channel_no="%s" id="%s">\n' +
-                        '          <div>\n' +
-                        '              <figure class="avatar">\n' +
-                        '                  <img src="%s" class="rounded-circle">\n' +
-                        '              </figure>\n' +
-                        '          </div>\n' +
-                        '          <div class="users-list-body">\n' +
-                        '              <h5>%s</h5>\n' +
-                        '              <p>%s</p>\n' +
-                        '              <div class="users-list-action">\n' +
-                        '                  <span class="badge badge-danger" id="id_badge_ntf">%s</span>\n' +
-                        '              </div>\n' +
-                        '          </div>\n' +
-                        '      </li>';
-                    html = html.format(v.channel_no, v.channel_no, v.img_path, v.room_name, v.room_description,v.unread_no);
-                    $('#id_chats').append(html)
-                })
-            })
-        }
 
         $(document).ready(function () {
             getChatRoome();
             var uid = "{{ user.profile.unicode_id }}";
-            notificationConnect(uid);
+            var ntfSocket = notificationConnect(uid);
 
         });
 

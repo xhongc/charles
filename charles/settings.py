@@ -53,8 +53,12 @@ CORS_ALLOW_HEADERS = (
     'x-requested-with',
     'Pragma',
     'X-CustomAuthHeader',
+    'cache-control',
+    'content-encoding',
+    'p3p',
+    'vary',
+    'x-msedge-ref'
 )
-
 APPEND_SLASH = True
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -72,8 +76,9 @@ INSTALLED_APPS = [
     'channels',
     'charles.shorturl',
     'charles.chat',
+    'charles.blog',
+    'charles.comments',
     'xadmin',
-    'reversion',
 ]
 REST_FRAMEWORK = {
     # 'DEFAULT_FILTER_BACKENDS': (
@@ -159,16 +164,16 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/0",
-        'TIMEOUT': 1800,                                              # 缓存超时时间（默认300，None表示永不过期，0表示立即过期）
+        'TIMEOUT': 1800,  # 缓存超时时间（默认300，None表示永不过期，0表示立即过期）
         "OPTIONS": {
-            "MAX_ENTRIES": 300,                                       # 最大缓存个数（默认300）
-            "CULL_FREQUENCY": 3,                                      # 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",      # redis客户端
-            "CONNECTION_POOL_KWARGS": {"max_connections": 100},         # redis最大连接池配置
-            "PASSWORD": "",                                   # redis密码
+            "MAX_ENTRIES": 300,  # 最大缓存个数（默认300）
+            "CULL_FREQUENCY": 3,  # 缓存到达最大个数之后，剔除缓存个数的比例，即：1/CULL_FREQUENCY（默认3）
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",  # redis客户端
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},  # redis最大连接池配置
+            "PASSWORD": "",  # redis密码
         },
-        'KEY_PREFIX': '',                                        # 缓存key的前缀（默认空）
-        'VERSION': 2,                                                 # 缓存key的版本（默认1）
+        'KEY_PREFIX': '',  # 缓存key的前缀（默认空）
+        'VERSION': 2,  # 缓存key的版本（默认1）
     },
 }
 TEMPLATES = [
@@ -183,7 +188,11 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'blog_tags': 'charles.blog.templatetags.blog_tags',
+            }
         },
+
     },
 ]
 
@@ -192,22 +201,22 @@ ASGI_APPLICATION = 'charles.routing.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#    }
-# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'charles_db',
-        'USER': 'root',
-        'PASSWORD': 'xhongcc',
-        'HOST': '',
-        'PORT': '',
-    },
+   'default': {
+       'ENGINE': 'django.db.backends.sqlite3',
+       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+   }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'charles_db',
+#         'USER': 'root',
+#         'PASSWORD': 'xhongc',
+#         'HOST': 'db',
+#         'PORT': '3306',
+#     },
+# }
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 APPEND_SLASH = False
@@ -243,30 +252,33 @@ USE_TZ = False
 
 
 STATIC_URL = '/static/'
-
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static/'),
 )
 # celery 配置
+# python manage.py celery worker --loglevel=info --beat
 import djcelery
 
 djcelery.setup_loader()
-BROKER_URL = 'redis://127.0.0.1:6379/1'
-CELERY_IMPORTS = ('project.tasks')
-CELERY_TIMEZONE = 'Asia/Shanghai'
-CELERY_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+BROKER_URL = 'redis://localhost:6379/1'  # 代理人
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # 结果存储地址
+CELERY_ACCEPT_CONTENT = ['application/json']  # 指定任务接收的内容序列化类型
+CELERY_TASK_SERIALIZER = 'json'  # 任务序列化方式
+CELERY_RESULT_SERIALIZER = 'json'  # 任务结果序列化方式
+CELERY_TASK_RESULT_EXPIRES = 12 * 30  # 超过时间
+CELERY_MESSAGE_COMPRESSION = 'zlib'  # 是否压缩
+CELERYD_CONCURRENCY = 4  # 并发数默认已CPU数量定
+CELERYD_PREFETCH_MULTIPLIER = 4  # celery worker 每次去redis取任务的数量
+CELERYD_MAX_TASKS_PER_CHILD = 3  # 每个worker最多执行3个任务就摧毁，避免内存泄漏
+CELERYD_FORCE_EXECV = True  # 可以防止死锁
+# CELERY_ENABLE_UTC = False  # 关闭时区
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'  # 定时任务调度器
+
 from celery.schedules import crontab
 from celery.schedules import timedelta
 
-CELERYBEAT_SCHEDULE = {  # 定时器策略
-    # 定时任务一：　每隔30s运行一次
-    u'测试定时器1': {
-        "task": "project.tasks.add",
-        # "schedule": crontab(minute='*/2'),  # or 'schedule':   timedelta(seconds=3),
-        "schedule": timedelta(seconds=30),
-        "args": (),
-    },
-}
 
 CHANNEL_LAYERS = {
     'default': {
