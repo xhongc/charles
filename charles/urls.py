@@ -27,7 +27,7 @@ from rest_framework.routers import DefaultRouter
 from charles.chat.views import FriendsViewsets, ChatLogViewsets, ChatRoomViewsets, PersonalChatLogViewsets
 from charles.navi.views import NanaCategoryViewsets
 from charles.shorturl.views import ShortUrlViewsets
-from project.views import ProjectViewset, HeroesViewset
+from project.views import ProjectViewset, HeroesViewset, PDFstreamViewsets
 from utils.channelsmiddleware import LoginObtainJSONWebToken
 
 router = DefaultRouter()
@@ -39,6 +39,7 @@ router.register(r'chat_log', viewset=ChatLogViewsets, base_name='chat_log')
 router.register(r'personal_chat_log', viewset=PersonalChatLogViewsets, base_name='personal_chat_log')
 router.register(r'chat_room', viewset=ChatRoomViewsets, base_name='chat_room')
 router.register(r'nana', viewset=NanaCategoryViewsets, base_name='nana')
+router.register(r'g_pdf', viewset=PDFstreamViewsets, base_name='g_pdf')
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -50,7 +51,7 @@ urlpatterns = [
     path('chat/', include('charles.chat.urls'), name='chat-url'),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('md/', TemplateView.as_view(template_name='markdown/md.html'), name='md'),
-    path('test/', TemplateView.as_view(template_name='test.html'), name='test'),
+    path('test/', TemplateView.as_view(template_name='viewer.html'), name='test'),
     path('moyu/', TemplateView.as_view(template_name='moyu.html'), name='moyu'),
     path('jsonp/', TemplateView.as_view(template_name='jsonp/json_parse.html'), name='jsonp'),
     path('bc/', TemplateView.as_view(template_name='chat/boot_chat.html'), name='bc'),

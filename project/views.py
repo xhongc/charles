@@ -1,5 +1,7 @@
 import json
 import time
+import requests
+import io
 
 from django.http import HttpResponse
 from django.utils.functional import cached_property
@@ -19,6 +21,7 @@ from .models import Project, Heroes
 from .tasks import add
 from django.db import connection
 from django.shortcuts import render
+from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
 
 
 class ProjectPagination(PageNumberPagination):
@@ -60,3 +63,17 @@ class ProjectViewset(mixins.ListModelMixin, mixins.UpdateModelMixin, GenericView
 class HeroesViewset(ModelViewSet):
     queryset = Heroes.objects.all()
     serializer_class = HeroesSerializers
+
+
+class PDFstreamViewsets(mixins.ListModelMixin, GenericViewSet):
+    def list(self, request, *args, **kwargs):
+        a = time.time()
+        url = request.query_params.get('pdfurl', None)
+        if not url:
+            return JsonResponse({'status': '0000'})
+        r = requests.get(url, stream=True)
+        fd = io.BytesIO()
+        for chunk in r.iter_content(2000):
+            fd.write(chunk)
+        print(time.time() - a)
+        return StreamingHttpResponse(streaming_content=(fd.getvalue(),), content_type='application/pdf')

@@ -57,7 +57,9 @@ CORS_ALLOW_HEADERS = (
     'content-encoding',
     'p3p',
     'vary',
-    'x-msedge-ref'
+    'x-msedge-ref',
+    'Access-Control-Allow-Origin',
+
 )
 APPEND_SLASH = True
 INSTALLED_APPS = [
@@ -180,7 +182,9 @@ CACHES = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates/')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates/'),
+                 os.path.join(BASE_DIR, 'static/pdfjs-2.4.456-dist/web'),
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -278,7 +282,6 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'  # 定时任务�
 
 from celery.schedules import crontab
 from celery.schedules import timedelta
-
 
 CHANNEL_LAYERS = {
     'default': {
