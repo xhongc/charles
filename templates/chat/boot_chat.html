@@ -1395,7 +1395,9 @@
         };
         $(document).on("click","[data-navigation-target]",function(){
             var target = $(this).attr('data-navigation-target');
-            target_map[target]()
+            if($.inArray(target,Object.keys(target_map))!==-1){
+                target_map[target]()
+            }
         });
 
 
