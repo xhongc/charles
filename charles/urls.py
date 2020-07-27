@@ -51,7 +51,7 @@ urlpatterns = [
     path('chat/', include('charles.chat.urls'), name='chat-url'),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('md/', TemplateView.as_view(template_name='markdown/md.html'), name='md'),
-    path('test/', TemplateView.as_view(template_name='viewer.html'), name='test'),
+    path('pdf_viewer/', TemplateView.as_view(template_name='viewer.html'), name='test'),
     path('moyu/', TemplateView.as_view(template_name='moyu.html'), name='moyu'),
     path('jsonp/', TemplateView.as_view(template_name='jsonp/json_parse.html'), name='jsonp'),
     path('bc/', TemplateView.as_view(template_name='chat/boot_chat.html'), name='bc'),

@@ -71,9 +71,12 @@ class PDFstreamViewsets(mixins.ListModelMixin, GenericViewSet):
         url = request.query_params.get('pdfurl', None)
         if not url:
             return JsonResponse({'status': '0000'})
-        r = requests.get(url, stream=True)
+        try:
+            r = requests.get(url, stream=True)
+        except:
+            r = ''
         fd = io.BytesIO()
         for chunk in r.iter_content(2000):
             fd.write(chunk)
         print(time.time() - a)
-        return StreamingHttpResponse(streaming_content=(fd.getvalue(),), content_type='application/pdf')
+        return StreamingHttpResponse(streaming_content=(fd.getvalue(),), content_type='application/octet-stream')

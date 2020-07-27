@@ -486,14 +486,12 @@ See https://github.com/adobe-type-tools/cmap-resources
             url: "/api/g_pdf?pdfurl=" + url, //请求服务器数据 获取pdf数据流
             success: function (data) {
                 var rawLength = data.length;
-                console.log(rawLength)
                 //转换成pdf.js能直接解析的Uint8Array类型,见pdf.js-4068    
                 var array = new Uint8Array(new ArrayBuffer(rawLength));
                 for (var i = 0; i < rawLength; i++) {
                     array[i] = data.charCodeAt(i) & 0xff;
                 }
                 var href = window.URL.createObjectURL(new Blob([array]));//数据流转换成createObjectURL能解析的Blob类型
-                console.log(href)
                 callback(href)   //返回url         
             }
         });
