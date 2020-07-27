@@ -1,5 +1,5 @@
 .idea/
-*.iml
+charles.iml
 *.xml
 .DS_Store
 db/

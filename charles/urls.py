@@ -16,11 +16,6 @@ Including another URLconf
 import xadmin
 from django.contrib import admin
 
-xadmin.autodiscover()
-# version模块自动注册需要版本控制的 Model
-from xadmin.plugins import xversion
-xversion.register_models()
-
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib.staticfiles import views
@@ -30,6 +25,7 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
 from charles.chat.views import FriendsViewsets, ChatLogViewsets, ChatRoomViewsets, PersonalChatLogViewsets
+from charles.navi.views import NanaCategoryViewsets
 from charles.shorturl.views import ShortUrlViewsets
 from project.views import ProjectViewset, HeroesViewset
 from utils.channelsmiddleware import LoginObtainJSONWebToken
@@ -42,10 +38,10 @@ router.register(r'friends', viewset=FriendsViewsets, base_name='friends')
 router.register(r'chat_log', viewset=ChatLogViewsets, base_name='chat_log')
 router.register(r'personal_chat_log', viewset=PersonalChatLogViewsets, base_name='personal_chat_log')
 router.register(r'chat_room', viewset=ChatRoomViewsets, base_name='chat_room')
+router.register(r'nana', viewset=NanaCategoryViewsets, base_name='nana')
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    url(r'^admin/', admin.site.urls),
     url('^api/', include(router.urls)),
     url(r'^docs/', include_docs_urls(title='API & Dog', description='API文档', public=True)),
     url(r'^api-token-auth/', LoginObtainJSONWebToken.as_view()),
