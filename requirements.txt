@@ -20,7 +20,6 @@ django-redis
 flower
 pymysql
 django-cors-headers
-channels
 djangorestframework-jwt
 https://codeload.github.com/sshwsfc/xadmin/zip/django2
 Markdown==2.6.9
