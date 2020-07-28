@@ -46,7 +46,7 @@ urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('md/', TemplateView.as_view(template_name='markdown/md.html'), name='md'),
     path('pdf_viewer/', TemplateView.as_view(template_name='viewer.html'), name='test'),
-    path('moyu/', TemplateView.as_view(template_name='moyu.html'), name='moyu'),
+    path('xhongc/', TemplateView.as_view(template_name='moyu.html'), name='xhongc'),
     path('jsonp/', TemplateView.as_view(template_name='jsonp/json_parse.html'), name='jsonp'),
     path('shorturl/', TemplateView.as_view(template_name='shorturl.html'), name='shorturl'),
     path('generateid/', TemplateView.as_view(template_name='generateid.html'), name='generateid'),
