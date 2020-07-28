@@ -30,11 +30,11 @@ from project.views import ProjectViewset, HeroesViewset, PDFstreamViewsets
 from utils.channelsmiddleware import LoginObtainJSONWebToken
 
 router = DefaultRouter()
-router.register(r'project', viewset=ProjectViewset, base_name='project')
-router.register(r'heroes', viewset=HeroesViewset, base_name='heroes')
-router.register(r'shorturl', viewset=ShortUrlViewsets, base_name='shorturl')
-router.register(r'nana', viewset=NanaCategoryViewsets, base_name='nana')
-router.register(r'g_pdf', viewset=PDFstreamViewsets, base_name='g_pdf')
+router.register(r'project', viewset=ProjectViewset, basename='project')
+router.register(r'heroes', viewset=HeroesViewset, basename='heroes')
+router.register(r'shorturl', viewset=ShortUrlViewsets, basename='shorturl')
+router.register(r'nana', viewset=NanaCategoryViewsets, basename='nana')
+router.register(r'g_pdf', viewset=PDFstreamViewsets, basename='g_pdf')
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
