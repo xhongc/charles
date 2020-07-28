@@ -67,7 +67,6 @@ class HeroesViewset(ModelViewSet):
 
 class PDFstreamViewsets(mixins.ListModelMixin, GenericViewSet):
     def list(self, request, *args, **kwargs):
-        a = time.time()
         url = request.query_params.get('pdfurl', None)
         if not url:
             return JsonResponse({'status': '0000'})
@@ -78,5 +77,4 @@ class PDFstreamViewsets(mixins.ListModelMixin, GenericViewSet):
         fd = io.BytesIO()
         for chunk in r.iter_content(2000):
             fd.write(chunk)
-        print(time.time() - a)
         return StreamingHttpResponse(streaming_content=(fd.getvalue(),), content_type='application/octet-stream')

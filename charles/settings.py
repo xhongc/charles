@@ -75,9 +75,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'djcelery',
     'corsheaders',
-    'channels',
     'charles.shorturl',
-    'charles.chat',
     'charles.blog',
     'charles.comments',
     'xadmin',
@@ -134,7 +132,6 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # 指明token的有效期
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'project.utils.jwt_response_payload_handler',
 }
-MIDDLEWARE_CLASSES = ['dwebsocket.middleware.WebSocketMiddleware']
 WEBSOCKET_ACCEPT_ALL = True
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -200,8 +197,6 @@ TEMPLATES = [
 
     },
 ]
-
-ASGI_APPLICATION = 'charles.routing.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -282,15 +277,6 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'  # 定时任务�
 
 from celery.schedules import crontab
 from celery.schedules import timedelta
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}
 
 # 允许https
 SECURE_SSL_REDIRECT = False
