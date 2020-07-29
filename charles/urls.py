@@ -24,7 +24,7 @@ from django.views.generic import TemplateView
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
-from charles.navi.views import NanaCategoryViewsets
+from charles.navi.views import NanaCategoryViewsets, NanaViewsets
 from charles.shorturl.views import ShortUrlViewsets
 from project.views import ProjectViewset, HeroesViewset, PDFstreamViewsets
 from utils.channelsmiddleware import LoginObtainJSONWebToken
@@ -34,6 +34,7 @@ router.register(r'project', viewset=ProjectViewset, basename='project')
 router.register(r'heroes', viewset=HeroesViewset, basename='heroes')
 router.register(r'shorturl', viewset=ShortUrlViewsets, basename='shorturl')
 router.register(r'nana', viewset=NanaCategoryViewsets, basename='nana')
+router.register(r'nana_log', viewset=NanaViewsets, basename='nana_log')
 router.register(r'g_pdf', viewset=PDFstreamViewsets, basename='g_pdf')
 
 urlpatterns = [

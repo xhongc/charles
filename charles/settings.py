@@ -101,7 +101,9 @@ REST_FRAMEWORK = {
         'anon': '30/minute',
         'user': '60/minute'
     },
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

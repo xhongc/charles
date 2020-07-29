@@ -22,7 +22,7 @@ pymysql
 django-cors-headers
 djangorestframework-jwt
 https://codeload.github.com/sshwsfc/xadmin/zip/django2
-Markdown==2.6.9
+Markdown==3.2.2
 Pygments==2.2.0
 gevent==20.6.0
 gunicorn

@@ -15,6 +15,7 @@ class Nana(models.Model):
 class Category(models.Model):
     title = models.CharField(max_length=64, null=False, blank=False, help_text='类目标题')
     html_id = models.CharField(max_length=64, null=False, blank=False, unique=True, help_text='类目ID')
+    ordering = models.IntegerField(default=99, help_text='置顶')
 
     def __str__(self):
         return self.title

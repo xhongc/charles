@@ -15,3 +15,11 @@ class ListNanaCategorySerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
+
+class NanaLogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Nana
+        fields = ('read_no',)
+
+
