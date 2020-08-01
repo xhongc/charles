@@ -2,10 +2,10 @@ certifi==2019.6.16
 chardet==3.0.4
 coreapi==2.3.3
 coreschema==0.0.4
-Django==2.2.3
+Django==2.2.14
 django-crispy-forms==1.7.2
 django-filter==2.1.0
-djangorestframework==3.9.4
+djangorestframework==3.11.0
 idna==2.8
 itypes==1.1.0
 Jinja2==2.10.1
@@ -20,10 +20,9 @@ django-redis
 flower
 pymysql
 django-cors-headers
-channels
 djangorestframework-jwt
 https://codeload.github.com/sshwsfc/xadmin/zip/django2
-Markdown==2.6.9
+Markdown==3.2.2
 Pygments==2.2.0
 gevent==20.6.0
 gunicorn

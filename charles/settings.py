@@ -57,7 +57,9 @@ CORS_ALLOW_HEADERS = (
     'content-encoding',
     'p3p',
     'vary',
-    'x-msedge-ref'
+    'x-msedge-ref',
+    'Access-Control-Allow-Origin',
+
 )
 APPEND_SLASH = True
 INSTALLED_APPS = [
@@ -73,9 +75,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'djcelery',
     'corsheaders',
-    'channels',
     'charles.shorturl',
-    'charles.chat',
     'charles.blog',
     'charles.comments',
     'xadmin',
@@ -101,7 +101,9 @@ REST_FRAMEWORK = {
         'anon': '30/minute',
         'user': '60/minute'
     },
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -132,7 +134,6 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # 指明token的有效期
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'project.utils.jwt_response_payload_handler',
 }
-MIDDLEWARE_CLASSES = ['dwebsocket.middleware.WebSocketMiddleware']
 WEBSOCKET_ACCEPT_ALL = True
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -180,7 +181,9 @@ CACHES = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates/')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates/'),
+                 os.path.join(BASE_DIR, 'static/pdfjs-2.4.456-dist/web'),
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -197,27 +200,25 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = 'charles.routing.application'
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-   }
-}
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'charles_db',
-#         'USER': 'root',
-#         'PASSWORD': 'xhongc',
-#         'HOST': 'db',
-#         'PORT': '3306',
-#     },
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#    }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'charles_db',
+        'USER': 'root',
+        'PASSWORD': 'xhongcc',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    },
+}
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [
@@ -278,16 +279,6 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'  # 定时任务�
 
 from celery.schedules import crontab
 from celery.schedules import timedelta
-
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}
 
 # 允许https
 SECURE_SSL_REDIRECT = False
