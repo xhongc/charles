@@ -2,180 +2,207 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>
-    小红叉 | 小红叉导航 | 客制化导航
-  </title>
-  <meta name="keywords" content="可定制的工作导航,创意导航,效率工具,新奇网站,网站导航,资源导航,职业导航,自由职业">
-  <meta name="description" content="可定制的工作导航,创意导航,效率工具,新奇网站,网站导航,资源导航,职业导航,自由职业">
-  <link rel="shortcut icon" href="../static/images/daohang.png" type="image/x-icon">
-  <link rel="apple-touch-icon-precomposed" href="../static/images/daohang.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="{% static 'css/xtiper.css' %}">
-  <link rel="stylesheet" href="{% static 'moyu/uikit.min.css' %}">
-  <link rel="stylesheet" href="{% static 'moyu/diy20200602.css' %}">
-  <script src="{% static 'js/xtiper.min.js' %}"></script>
-  <script src="{% static 'moyu/uikit.min.js' %}"></script>
-  <script src="{% static 'moyu/uikit.min.js' %}"></script>
-  <script src="{% static 'moyu/uikit-icons.min.js' %}"></script>
-  <script src="{% static 'js/jquery.min.js' %}"></script>
-
-  <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>
+        小红叉 | 小红叉导航 | 客制化导航
+    </title>
+    <meta name="keywords" content="可定制的工作导航,创意导航,效率工具,新奇网站,网站导航,资源导航,职业导航,自由职业">
+    <meta name="description" content="可定制的工作导航,创意导航,效率工具,新奇网站,网站导航,资源导航,职业导航,自由职业">
+    <link rel="shortcut icon" href="../static/images/daohang.png" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" href="../static/images/daohang.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/xtiper.css' %}">
+    <link rel="stylesheet" href="{% static 'moyu/uikit.min.css' %}">
+    <link rel="stylesheet" href="{% static 'moyu/diy20200602.css' %}">
     <style>
-  #draggable { width: 150px; height: 150px; padding: 0.5em; }
-  </style>
 
-  <script type="text/javascript" src="{% static 'moyu/keyword.js' %}"></script>
-  <script type="text/javascript" src="{% static 'moyu/moni.js' %}"></script>
+    </style>
+    <script src="{% static 'js/xtiper.min.js' %}"></script>
+    <script src="{% static 'moyu/uikit.min.js' %}"></script>
+    <script src="{% static 'moyu/uikit.min.js' %}"></script>
+    <script src="{% static 'moyu/uikit-icons.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+
+    <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <style>
+        #draggable {
+            width: 150px;
+            height: 150px;
+            padding: 0.5em;
+        }
+
+        .clear {
+            display: none;
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            margin: 10px 4px -32px -55px;
+            background-image: url('/static/images/icons/clear.png');
+        }
+
+        .input::-ms-clear {
+            display: none;
+        }
+
+        .input:valid + .clear {
+            display: inline-block;
+            animation: fade-in; /*动画名称*/
+            animation-duration: 1.5s; /*动画持续时间*/
+            -webkit-animation: fade-in 1.5s; /*针对webkit内核*/
+        }
+    </style>
+
+    <script type="text/javascript" src="{% static 'moyu/keyword.js' %}"></script>
+    <script type="text/javascript" src="{% static 'moyu/moni.js' %}"></script>
 </head>
 
 <body style="zoom: 1;">
 <main>
 
-  <header class="dingbu">
-    <div style="padding:30px 0px 15px 0px">
-      <p style="font-size:14px;letter-spacing:14px;margin:5px 5px 5px 17px;">
-        -自定义专属导航页-
-      </p>
-    </div>
-    <div class="searchB">
-      <div id="main">
-        <div id="bigBox">
-          <div id="search_bg">
-            <div id="button_bg">
-              <div class="searchChoice">
-                <img title="切换搜索引擎" class="sChoiceBtn"
-                     src="../static/moyu/4_scbing.png">
-                <div class="scBigBox" style="height: 0px; display: none;">
-                  <div class="scSmallBox" id="baidu">
-                    <img class="scImg"
-                         src="../static/moyu/1_scbaidu.png">
-                    <span class="scName">
+    <header class="dingbu">
+        <div style="padding:30px 0px 15px 0px">
+            <p style="font-size:14px;letter-spacing:14px;margin:5px 5px 5px 17px;">
+                -自定义专属导航页-
+            </p>
+        </div>
+        <div class="searchB">
+            <div id="main">
+                <div id="bigBox">
+                    <div id="search_bg">
+                        <div id="button_bg">
+                            <div class="searchChoice">
+                                <img title="切换搜索引擎" class="sChoiceBtn"
+                                     src="../static/moyu/4_scbing.png">
+                                <div class="scBigBox" style="height: 0px; display: none;">
+                                    <div class="scSmallBox" id="baidu">
+                                        <img class="scImg"
+                                             src="../static/moyu/1_scbaidu.png">
+                                        <span class="scName">
                                                     百度
                                                 </span>
-                  </div>
-                  <div class="scSmallBox" id="bing">
-                    <img class="scImg"
-                         src="../static/moyu/4_scbing.png">
-                    <span class="scName">
+                                    </div>
+                                    <div class="scSmallBox" id="bing">
+                                        <img class="scImg"
+                                             src="../static/moyu/4_scbing.png">
+                                        <span class="scName">
                                                     必应
                                                 </span>
-                  </div>
-                  <div class="scSmallBox" id="zhihu">
-                    <img class="scImg"
-                         src="../static/moyu/zhihu.ico">
-                    <span class="scName">
+                                    </div>
+                                    <div class="scSmallBox" id="zhihu">
+                                        <img class="scImg"
+                                             src="../static/moyu/zhihu.ico">
+                                        <span class="scName">
                                                     知乎
                                                 </span>
-                  </div>
-                  <div class="scSmallBox" id="google">
-                    <img class="scImg"
-                         src="../static/moyu/6_scgoogle.png">
-                    <span class="scName">
+                                    </div>
+                                    <div class="scSmallBox" id="google">
+                                        <img class="scImg"
+                                             src="../static/moyu/6_scgoogle.png">
+                                        <span class="scName">
                                                     Google
                                                 </span>
-                  </div>
-                  <div class="scSmallBox" id="youdao">
-                    <img class="scImg"
-                         src="../static/moyu/youdao.ico">
-                    <span class="scName">
+                                    </div>
+                                    <div class="scSmallBox" id="youdao">
+                                        <img class="scImg"
+                                             src="../static/moyu/youdao.ico">
+                                        <span class="scName">
                                                     有道翻译
                                                 </span>
-                  </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form action="#" method="GET" target="_blank" id="searchCheck">
+                                <input type="text" value="" x-webkit-speech="" lang="zh-CN" placeholder=""
+                                       name="https://cn.bing.com/search?q=" id="search" autocomplete="off"
+                                       class="textb input" required><a href="javascript:" class="clear"></a>
+                                <input type="submit" value="阅" id="searchBtn" class="subb">
+                            </form>
+                            <div class="promptBtn " style="display: block;">
+                            </div>
+                            <div class="keyword" style="display: none; height: auto;color:black;text-align:left;"></div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <form action="#" method="GET" target="_blank" id="searchCheck">
-                <input type="text" value="" x-webkit-speech="" lang="zh-CN" placeholder=""
-                       name="https://cn.bing.com/search?q=" id="search" autocomplete="off"
-                       class="textb">
-                <input type="submit" value="阅" id="searchBtn" class="subb">
-              </form>
-              <div class="promptBtn " style="display: block;">
-              </div>
-              <div class="keyword" style="display: none; height: auto;color:black;text-align:left;"></div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
 
 
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 240" fill="white" class="bolang">
-      <g>
-        <path
-            d="M1920,144.5l0,95.5l-1920,0l0,-65.5c196,-36 452.146,-15.726 657.5,8.5c229.698,27.098 870,57 1262.5,-38.5Z">
-        </path>
-      </g>
-    </svg>
-  </header>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 240" fill="white" class="bolang">
+            <g>
+                <path
+                        d="M1920,144.5l0,95.5l-1920,0l0,-65.5c196,-36 452.146,-15.726 657.5,8.5c229.698,27.098 870,57 1262.5,-38.5Z">
+                </path>
+            </g>
+        </svg>
+    </header>
 </main>
 
 <div class="uk-container">
-  <label class="pure-material-switch" style="float: right">
-    <input type="checkbox" id="tubiao" checked>
-    <span>图标</span>
-  </label>
-  <div style="float: right">&nbsp;&nbsp;&nbsp;</div>
-  <label class="pure-material-switch" style="float: right">
-    <input type="checkbox" id="moni">
-    <span>莫尼</span>
-  </label>
-  <div style="float: right">&nbsp;&nbsp;&nbsp;</div>
-  <label class="pure-material-switch" style="float: right">
-    <input type="checkbox" id="bingbg">
-    <span>必应背景</span>
-  </label>
-  <table class="uk-table changyong uk-table-small">
-    <caption>
-    </caption>
-    <thead>
-    <tr>
-      <th>
-      </th>
-    </tr>
-    </thead>
-    <tfoot>
-    <tr>
-      <td>
-      </td>
-    </tr>
-    </tfoot>
-    <tbody>
+    <label class="pure-material-switch" style="float: right">
+        <input type="checkbox" id="tubiao" checked>
+        <span>图标</span>
+    </label>
+    <div style="float: right">&nbsp;&nbsp;&nbsp;</div>
+    <label class="pure-material-switch" style="float: right">
+        <input type="checkbox" id="moni">
+        <span>莫尼</span>
+    </label>
+    <div style="float: right">&nbsp;&nbsp;&nbsp;</div>
+    <label class="pure-material-switch" style="float: right">
+        <input type="checkbox" id="bingbg">
+        <span>必应背景</span>
+    </label>
+    <table class="uk-table changyong uk-table-small">
+        <caption>
+        </caption>
+        <thead>
+        <tr>
+            <th>
+            </th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td>
+            </td>
+        </tr>
+        </tfoot>
+        <tbody>
 
-    </tbody>
-  </table>
-  <p class="tishi">
-    如何优雅地使用本导航： Ctrl+F搜索 、 Ctrl+D收藏、分享给好友
-  </p>
-  <div id="last_container"></div>
+        </tbody>
+    </table>
+    <p class="tishi">
+        如何优雅地使用本导航： Ctrl+F搜索 、 Ctrl+D收藏、分享给好友
+    </p>
+    <div id="last_container"></div>
 </div>
 <div class="right-side">
-  <div class="uk-panel  nav-sticky right-nav">
-    <ul class="uk-nav uk-nav-side " data-uk-scrollspy-nav="closest: li; scroll: true" id="id_scroll_nav">
-    </ul>
-  </div>
-  <div>
-  </div>
-  <div class="uk-panel  nav-sticky right-nav" style="margin-top:12px">
-    <a href="#" uk-totop="" uk-scroll="" class="uk-icon uk-totop">
-      <svg width="18" height="10" viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg" data-svg="totop">
-        <polyline fill="none" stroke="#000" stroke-width="1.2" points="1 9 9 1 17 9 "></polyline>
-      </svg>
-    </a>
-  </div>
+    <div class="uk-panel  nav-sticky right-nav">
+        <ul class="uk-nav uk-nav-side " data-uk-scrollspy-nav="closest: li; scroll: true" id="id_scroll_nav">
+        </ul>
+    </div>
+    <div>
+    </div>
+    <div class="uk-panel  nav-sticky right-nav" style="margin-top:12px">
+        <a href="#" uk-totop="" uk-scroll="" class="uk-icon uk-totop">
+            <svg width="18" height="10" viewBox="0 0 18 10" xmlns="http://www.w3.org/2000/svg" data-svg="totop">
+                <polyline fill="none" stroke="#000" stroke-width="1.2" points="1 9 9 1 17 9 "></polyline>
+            </svg>
+        </a>
+    </div>
 </div>
 <hr class="uk-divider-small" style="width:100%;text-align:center; margin:80px auto 20px auto">
 <table class="uk-table uk-table-small">
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td>友情链接</td>
-  </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>友情链接</td>
+    </tr>
 </table>
 {% include 'moni.html' %}
 </div>
@@ -207,7 +234,7 @@
             return args[count++];
         });
     };
-    $(document).on('click', 'a', function () {
+    $(document).on('click', 'table a,#last_container a', function () {
         $.ajax({
             url: '/api/nana_log/%s/'.format($(this).attr('nana')),
             type: 'get',
@@ -215,6 +242,7 @@
             }
         })
     })
+
     function getNana() {
         $.ajax({
             url: '/api/nana/',
@@ -319,6 +347,9 @@
         $img.attr('data-isLoaded', 1)//已加载的图片做标记
     }
 
+    $('.clear').on('click', function () {
+        $('.input').val('')
+    })
     $(document).ready(function () {
         getNana();
     })
