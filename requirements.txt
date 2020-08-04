@@ -27,3 +27,5 @@ Pygments==2.2.0
 gevent==20.6.0
 gunicorn
 mysqlclient==1.4.6
+imgkit==1.0.2
+
