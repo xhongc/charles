@@ -89,9 +89,21 @@
     /*-----------------获取关键词js---------------------*/
     var textb = $("#search_bg #button_bg form .textb");
     textb.keyup(function (event) {
+        var sousuo = $('#sousuo');
+        var hidden_container = $('#hidden_container')
+        var a = $('#last_container').find('a[href*="%s"]'.format(textb.val()))
+        if(a.length >=1){
+            hidden_container.empty();
+            hidden_container.append(a.clone())
+        }
+        else {
+            hidden_container.empty();
+            sousuo.hide();
+        }
         if (textb.val() == "" || textb.val() == " ") {
             return;
         }
+        sousuo.show();
         if (event.which != 39 && event.which != 40 && event.which != 37 && event.which != 38 && event.which != 13)
             $.ajax({
                 url: "//sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su",
