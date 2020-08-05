@@ -1,6 +1,0 @@
-.idea/
-*.iml
-*.xml
-.DS_Store
-*.sqlite3
-/db
