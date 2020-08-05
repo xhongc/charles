@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post" action="" id="id_form">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>姓名</th>
+            <th>考勤</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for form in formset %}
+            <tr id="clo">
+                {{ form.id }}
+                <td>{{ form.offer_title }} </td>
+                <td>{{ form.status }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input type="submit" value="保存">
+</form>
+<button class="btn-table-css" onclick="del()" style="position: relative;top: 7px;">-</button><button class="btn-table-css" onclick="fun()">+</button>
+
+</body>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<script>
+    String.prototype.format = function () {
+        var args = Array.prototype.slice.call(arguments);
+        var count = 0;
+        return this.replace(/%s/g, function (s, i) {
+            return args[count++];
+        });
+    };
+    //添加一行
+    function fun() {
+        var html = '<tr id="clo">\n' +
+            '                <input type="hidden" name="form-%s-id" value="" id="id_form-%s-id">\n' +
+            '                <td><input type="text" name="form-%s-offer_title" value="" id="id_form-%s-offer_title"> </td>\n' +
+            '                <td><input type="text" name="form-%s-status" value="" id="id_form-%s-status"></td>\n' +
+            '            </tr>'
+        var count = $('table tr').length -1
+        console.log(count,$('table tr').length)
+        html = html.format(count,count,count,count,count,count);
+        {#var $td = $("#clo").clone();#}
+        $(".table").append(html);
+        var i = 1;
+        $("#clo").each(function () {
+            console.log($(this).find('td input').attr('id'));
+            $(this).find('td input').attr('name','form-3-offer_title')
+        });
+        $("table tr:last").find(":input").val('');
+    }
+
+    //删除一行
+    function del() {
+        $("table tr:not(:first):not(:first):last").remove();
+    }
+</script>
+</html>
