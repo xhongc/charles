@@ -16,8 +16,8 @@ function redirectUrl(th) {
         fail: function () {
         }
     });
-
-    window.location.href = the.attr('data-url');
+    console.log(the.attr('data-url'))
+    window.location.href = '/'+the.attr('data-url');
 }
 
 $(document).on('mouseenter', ".ticketBox", function () {
