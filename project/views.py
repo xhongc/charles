@@ -1,31 +1,25 @@
-import json
-import time
 import requests
 import io
 
+import requests
 from django.conf import settings
-from django.http import HttpResponse
-from django.utils.functional import cached_property
+from django.http import StreamingHttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from django_filters.rest_framework import DjangoFilterBackend
 from qiniu import Auth
 from rest_framework import mixins
-from rest_framework import viewsets
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from charles.navi.models import Nana
 from project.filters import ProjectFilter
 from project.serializers import ProjectSerializers, HeroesSerializers
 from .models import Project, Heroes
-from .tasks import add, catch_home, catch_home_task
-from django.db import connection
-from django.shortcuts import render
-from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from .tasks import catch_home_task
 
 
 class ProjectPagination(PageNumberPagination):

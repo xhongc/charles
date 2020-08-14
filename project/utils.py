@@ -1,13 +1,7 @@
-import imgkit
-import requests
-import environ
-import os
-from django.conf import settings
-from qiniu import Auth, put_file, etag
-import qiniu.config
-
 import time
 
+from django.conf import settings
+from qiniu import Auth, put_file
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 

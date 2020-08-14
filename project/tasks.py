@@ -1,8 +1,6 @@
 import os
-import time
 
 from celery import Task
-from django.conf import settings
 
 from charles.celery import app
 from project.utils import upload_qiniu, HomePageCut
