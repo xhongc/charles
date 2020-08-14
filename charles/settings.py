@@ -293,5 +293,6 @@ SECURE_SSL_REDIRECT = False
 QINIU_ACCESS_KEY = env.get_value('QINIU_ACCESS_KEY', default='')
 QINNIU_SECRET_KEY = env.get_value('QINNIU_SECRET_KEY', default='')
 BUCKET_NAME = env.get_value('BUCKET_NAME', default='')
-QINNIU_CALLBACK_URL = 'http://md2ja4.natappfree.cc/callback/'
+# QINNIU_CALLBACK_URL = 'http://md2ja4.natappfree.cc/callback/'
+QINNIU_CALLBACK_URL = env.get_value('QINNIU_CALLBACK_URL', default='')
 CDN_URL = env.get_value('CDN_URL', default='')
