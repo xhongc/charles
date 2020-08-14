@@ -14,7 +14,7 @@ class HomePageCut(object):
         chrome_options.add_experimental_option("excludeSwitches", ["ignore-certificate-errors",
                                                                    "enable-automation"])
         chrome_options.add_argument('--hide-scrollbars')  # 隐藏滚动条, 应对一些特殊页面
-        # chrome_options.add_argument('blink-settings=imagesEnabled=false')  # 不加载图片, 提升速度
+        chrome_options.add_argument('blink-settings=imagesEnabled=false')  # 不加载图片, 提升速度
         chrome_options.add_argument('--headless')  # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
 
         self.driver = webdriver.Chrome(options=chrome_options, executable_path='/usr/local/bin/chromedriver')
