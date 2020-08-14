@@ -17,7 +17,7 @@ class HomePageCut(object):
         # chrome_options.add_argument('blink-settings=imagesEnabled=false')  # 不加载图片, 提升速度
         chrome_options.add_argument('--headless')  # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
 
-        self.driver = webdriver.Chrome(options=chrome_options)
+        self.driver = webdriver.Chrome(options=chrome_options, executable_path='/usr/local/bin/chromedriver')
 
     def cut(self, url, out):
         try:
