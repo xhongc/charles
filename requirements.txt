@@ -27,3 +27,5 @@ Pygments==2.2.0
 gevent==20.6.0
 gunicorn
 mysqlclient==1.4.6
+django-environ==0.4.5
+selenium==3.141.0

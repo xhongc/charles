@@ -11,9 +11,15 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 import datetime
 import os
+import environ
 
+env = environ.Env(
+)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# reading .env file
+ENV_DIR = os.path.join(BASE_DIR, '.env')
+env.read_env(ENV_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -23,7 +29,7 @@ SECRET_KEY = '!z+dsq6i#v8z0*$i7=o8^k=+-xa)6+*(hs!4csz3a&sxm_igfl'
 WSGI_APPLICATION = 'charles.wsgi.application'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.get_value('DEBUG', default=True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -262,7 +268,6 @@ STATICFILES_DIRS = (
 import djcelery
 
 djcelery.setup_loader()
-
 BROKER_URL = 'redis://localhost:6379/1'  # 代理人
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'  # 结果存储地址
 CELERY_ACCEPT_CONTENT = ['application/json']  # 指定任务接收的内容序列化类型
@@ -274,7 +279,8 @@ CELERYD_CONCURRENCY = 4  # 并发数默认已CPU数量定
 CELERYD_PREFETCH_MULTIPLIER = 4  # celery worker 每次去redis取任务的数量
 CELERYD_MAX_TASKS_PER_CHILD = 3  # 每个worker最多执行3个任务就摧毁，避免内存泄漏
 CELERYD_FORCE_EXECV = True  # 可以防止死锁
-# CELERY_ENABLE_UTC = False  # 关闭时区
+CELERY_ENABLE_UTC = False  # 关闭时区
+DJANGO_CELERY_BEAT_TZ_AWARE = False
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'  # 定时任务调度器
 
 from celery.schedules import crontab
@@ -282,3 +288,10 @@ from celery.schedules import timedelta
 
 # 允许https
 SECURE_SSL_REDIRECT = False
+
+# 七牛云
+QINIU_ACCESS_KEY = env.get_value('QINIU_ACCESS_KEY', default='')
+QINNIU_SECRET_KEY = env.get_value('QINNIU_SECRET_KEY', default='')
+BUCKET_NAME = env.get_value('BUCKET_NAME', default='')
+QINNIU_CALLBACK_URL = 'http://md2ja4.natappfree.cc/callback/'
+CDN_URL = env.get_value('CDN_URL', default='')

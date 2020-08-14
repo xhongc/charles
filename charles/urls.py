@@ -26,7 +26,7 @@ from rest_framework.routers import DefaultRouter
 
 from charles.navi.views import NanaCategoryViewsets, NanaViewsets
 from charles.shorturl.views import ShortUrlViewsets
-from project.views import ProjectViewset, HeroesViewset, PDFstreamViewsets
+from project.views import ProjectViewset, HeroesViewset, PDFstreamViewsets, QiniuCallback
 from utils.channelsmiddleware import LoginObtainJSONWebToken
 
 router = DefaultRouter()
@@ -52,6 +52,7 @@ urlpatterns = [
     path('shorturl/', TemplateView.as_view(template_name='shorturl.html'), name='shorturl'),
     path('generateid/', TemplateView.as_view(template_name='generateid.html'), name='generateid'),
     path('login/', TemplateView.as_view(template_name='login.html'), name='login'),
+    path('callback/', QiniuCallback, name='callback'),
 ]
 
 if settings.DEBUG:
