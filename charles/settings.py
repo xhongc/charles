@@ -278,6 +278,7 @@ CELERY_MESSAGE_COMPRESSION = 'zlib'  # 是否压缩
 CELERYD_CONCURRENCY = 4  # 并发数默认已CPU数量定
 CELERYD_PREFETCH_MULTIPLIER = 4  # celery worker 每次去redis取任务的数量
 CELERYD_MAX_TASKS_PER_CHILD = 3  # 每个worker最多执行3个任务就摧毁，避免内存泄漏
+CELERY_TIMEZONE = TIME_ZONE
 CELERYD_FORCE_EXECV = True  # 可以防止死锁
 CELERY_ENABLE_UTC = False  # 关闭时区
 DJANGO_CELERY_BEAT_TZ_AWARE = False

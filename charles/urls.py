@@ -28,7 +28,6 @@ from charles.navi.views import NanaCategoryViewsets, NanaViewsets
 from charles.shorturl.views import ShortUrlViewsets
 from project.views import ProjectViewset, HeroesViewset, PDFstreamViewsets, QiniuCallback
 from utils.channelsmiddleware import LoginObtainJSONWebToken
-
 router = DefaultRouter()
 router.register(r'project', viewset=ProjectViewset, basename='project')
 router.register(r'heroes', viewset=HeroesViewset, basename='heroes')
