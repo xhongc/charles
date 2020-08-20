@@ -31,7 +31,7 @@ def catch_home(url, uid):
 def catch_home_task():
     from charles.navi.models import Nana
 
-    nanas = Nana.objects.filter(img_path='/', url__isnull=False).values('url', 'id')
+    nanas = Nana.objects.filter(img_path='/', url__isnull=False).values('url', 'id').first()
     for each in nanas:
         url = each.get('url', '')
         uid = each.get('id', '')
