@@ -32,13 +32,12 @@ def catch_home_task():
     from charles.navi.models import Nana
 
     nanas = Nana.objects.filter(img_path='/', url__isnull=False).values('url', 'id').first()
-    for each in nanas:
-        url = each.get('url', '')
-        uid = each.get('id', '')
-        print('catch', url)
-        is_success = HomePageCut().cut(url, out='out.png')
-        if is_success:
-            upload_qiniu(uid, uid)
+    url = nanas.get('url', '')
+    uid = nanas.get('id', '')
+    print('catch', url)
+    is_success = HomePageCut().cut(url, out='out.png')
+    if is_success:
+        upload_qiniu(uid, uid)
 
 
 if __name__ == '__main__':
